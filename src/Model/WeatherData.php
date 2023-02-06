@@ -6,13 +6,13 @@ namespace App\Model;
 
 class WeatherData
 {
-    public $main;
-    public $description;
-    public $temp_avg;
-    public $temp_min;
-    public $temp_max;
-    public $pressure;
-    public $humidity;
+    private $main;
+    private $description;
+    private $temp_avg;
+    private $temp_min;
+    private $temp_max;
+    private $pressure;
+    private $humidity;
 
     public function __construct(array $data) {
         $this->main = $data['weather'][0]['main'];
