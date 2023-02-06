@@ -18,37 +18,6 @@ class GetWeatherForLocationController extends AbstractController
         private HttpClientInterface $client,
     ) {}
 
-    public function getContentFromUrl(string $url): array
-    {
-        if ($this->client->request('GET', $url)->getStatusCode() < 400){
-
-            $response = $this->client->request('GET', $url);
-            return $response->toArray();
-        }
-
-        else{
-            return ['cod' => Response::HTTP_BAD_REQUEST, 'message' => 'Wrong data'];
-        }
-    }
-
-    public function getWeatherArrayContext(array $data): array
-    {
-        $weatherData = [
-            'weather' => [
-                'main' => $data['weather'][0]['main'],
-                'description' => $data['weather'][0]['description']
-            ],
-            'temp' => [
-                'temp_avg' => $data['main']['temp'],
-                'temp_min' => $data['main']['temp_min'],
-                'temp_max' => $data['main']['temp_max']
-            ],
-            'pressure' => $data['main']['pressure'],
-            'humidity' => $data['main']['humidity'],
-        ];
-        return $weatherData;
-    }
-
     #[Route('/api/location', name: 'location')]
     public function __invoke(Request $request, string $openWeatherMapApiKey): JsonResponse
     {
@@ -69,5 +38,36 @@ class GetWeatherForLocationController extends AbstractController
 
         else
             return new JsonResponse($data, Response::HTTP_BAD_REQUEST);
+    }
+
+    private function getContentFromUrl(string $url): array
+    {
+        if ($this->client->request('GET', $url)->getStatusCode() < 400){
+
+            $response = $this->client->request('GET', $url);
+            return $response->toArray();
+        }
+
+        else{
+            return ['cod' => Response::HTTP_BAD_REQUEST, 'message' => 'Wrong data'];
+        }
+    }
+
+    private function getWeatherArrayContext(array $data): array
+    {
+        $weatherData = [
+            'weather' => [
+                'main' => $data['weather'][0]['main'],
+                'description' => $data['weather'][0]['description']
+            ],
+            'temp' => [
+                'temp_avg' => $data['main']['temp'],
+                'temp_min' => $data['main']['temp_min'],
+                'temp_max' => $data['main']['temp_max']
+            ],
+            'pressure' => $data['main']['pressure'],
+            'humidity' => $data['main']['humidity'],
+        ];
+        return $weatherData;
     }
 }
