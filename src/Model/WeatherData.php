@@ -6,28 +6,20 @@ namespace App\Model;
 
 class WeatherData
 {
-    private $main;
-    private $description;
-    private $temp_avg;
-    private $temp_min;
-    private $temp_max;
-    private $pressure;
-    private $humidity;
-
-    public function __construct(array $data) {
-        $this->main = $data['weather'][0]['main'];
-        $this->description = $data['weather'][0]['description'];
-        $this->temp_avg = $data['main']['temp'];
-        $this->temp_min = $data['main']['temp_min'];
-        $this->temp_max = $data['main']['temp_max'];
-        $this->pressure = $data['main']['pressure'];
-        $this->humidity = $data['main']['humidity'];
-    }
+    public function __construct(
+        private $main,
+        private $description,
+        private $averageTemperature,
+        private $minimumTemperature,
+        private $maximumTemperature,
+        private $pressure,
+        private $humidity
+    ) {}
 
     /**
      * @return mixed
      */
-    public function getMain(): mixed
+    public function getMain()
     {
         return $this->main;
     }
@@ -35,7 +27,7 @@ class WeatherData
     /**
      * @param mixed $main
      */
-    public function setMain(mixed $main): void
+    public function setMain($main): void
     {
         $this->main = $main;
     }
@@ -43,7 +35,7 @@ class WeatherData
     /**
      * @return mixed
      */
-    public function getDescription(): mixed
+    public function getDescription()
     {
         return $this->description;
     }
@@ -51,7 +43,7 @@ class WeatherData
     /**
      * @param mixed $description
      */
-    public function setDescription(mixed $description): void
+    public function setDescription($description): void
     {
         $this->description = $description;
     }
@@ -59,55 +51,55 @@ class WeatherData
     /**
      * @return mixed
      */
-    public function getTempAvg(): mixed
+    public function getAverageTemperature()
     {
-        return $this->temp_avg;
+        return $this->averageTemperature;
     }
 
     /**
-     * @param mixed $temp_avg
+     * @param mixed $averageTemperature
      */
-    public function setTempAvg(mixed $temp_avg): void
+    public function setAverageTemperature($averageTemperature): void
     {
-        $this->temp_avg = $temp_avg;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTempMin(): mixed
-    {
-        return $this->temp_min;
-    }
-
-    /**
-     * @param mixed $temp_min
-     */
-    public function setTempMin(mixed $temp_min): void
-    {
-        $this->temp_min = $temp_min;
+        $this->averageTemperature = $averageTemperature;
     }
 
     /**
      * @return mixed
      */
-    public function getTempMax(): mixed
+    public function getMinimumTemperature()
     {
-        return $this->temp_max;
+        return $this->minimumTemperature;
     }
 
     /**
-     * @param mixed $temp_max
+     * @param mixed $minimumTemperature
      */
-    public function setTempMax(mixed $temp_max): void
+    public function setMinimumTemperature($minimumTemperature): void
     {
-        $this->temp_max = $temp_max;
+        $this->minimumTemperature = $minimumTemperature;
     }
 
     /**
      * @return mixed
      */
-    public function getPressure(): mixed
+    public function getMaximumTemperature()
+    {
+        return $this->maximumTemperature;
+    }
+
+    /**
+     * @param mixed $maximumTemperature
+     */
+    public function setMaximumTemperature($maximumTemperature): void
+    {
+        $this->maximumTemperature = $maximumTemperature;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPressure()
     {
         return $this->pressure;
     }
@@ -115,7 +107,7 @@ class WeatherData
     /**
      * @param mixed $pressure
      */
-    public function setPressure(mixed $pressure): void
+    public function setPressure($pressure): void
     {
         $this->pressure = $pressure;
     }
@@ -123,7 +115,7 @@ class WeatherData
     /**
      * @return mixed
      */
-    public function getHumidity(): mixed
+    public function getHumidity()
     {
         return $this->humidity;
     }
@@ -131,7 +123,7 @@ class WeatherData
     /**
      * @param mixed $humidity
      */
-    public function setHumidity(mixed $humidity): void
+    public function setHumidity($humidity): void
     {
         $this->humidity = $humidity;
     }
