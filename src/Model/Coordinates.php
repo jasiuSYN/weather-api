@@ -6,38 +6,37 @@ namespace App\Model;
 
 class Coordinates
 {
-    public function __construct(public string $latitude, public string $longitude) {}
+    public function __construct(private string $latitude, private string $longitude) {}
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getLatitude(): string
+    public function getLatitude()
     {
         return $this->latitude;
     }
 
     /**
-     * @param string $latitude
+     * @param mixed $latitude
      */
-    public function setLatitude(string $latitude): void
+    public function setLatitude($latitude): void
     {
         $this->latitude = $latitude;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getLongitude(): string
+    public function getLongitude()
     {
         return $this->longitude;
     }
 
     /**
-     * @param string $longitude
+     * @param mixed $longitude
      */
-    public function setLongitude(string $longitude): void
+    public function setLongitude($longitude): void
     {
         $this->longitude = $longitude;
     }
-
 }
