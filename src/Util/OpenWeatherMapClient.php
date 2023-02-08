@@ -18,19 +18,20 @@ class OpenWeatherMapClient implements WeatherProviderClientInterface
 
     public function fetchWeatherForCoordinates(Coordinates $coordinates): WeatherData
     {
-        $latitude = $coordinates->getLatitude();
-        $longitude = $coordinates->getLongitude();
+        $transformer = new OpenWeatherMapToWeatherDataTransformer();
 
         $url = sprintf(
             "https://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s&appid=%s&units=metric",
-            $latitude, $longitude, $this->openWeatherMapApiKey
+            $coordinates->getLatitude(), $coordinates->getLongitude(), $this->openWeatherMapApiKey
         );
 
         try {
             $responseData = $this->client->request('GET', $url)->toArray();
-        } catch (ClientExceptionInterface $e) {
+        }
+        catch (ClientExceptionInterface $e) {
             error_log($e->getMessage());
         }
-        return new WeatherData($responseData);
+
+        return $transformer->transform($responseData);
     }
 }
