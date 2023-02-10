@@ -6,30 +6,27 @@ namespace App\Controller;
 
 use App\Model\Coordinates;
 use App\Util\OpenWeatherMapClient;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class GetWeatherForCoordinatesController extends AbstractController
 {
     public function __construct(private OpenWeatherMapClient $client) {}
 
-    #[Route('/api/weather/coordinates', name: 'weather-coordinates')]
-    public function __invoke(Request $request, SerializerInterface $serializer): Response
+    #[Route('/api/weather-by-coordinates', name: 'weather-coordinates')]
+    public function __invoke(Request $request, SerializerInterface $serializer, ObjectNormalizer $normalizer): JsonResponse
     {
-        $data = $request->query->all();
-
-        $jsonData = json_encode($data);
-
-        $coordinates = $serializer->deserialize($jsonData, Coordinates::class, 'json');
+        $coordinates = $normalizer->denormalize($request->query->all(), Coordinates::class);
 
         $weatherData = $this->client->fetchWeatherForCoordinates($coordinates);
 
         $jsonWeatherData = $serializer->serialize($weatherData, 'json');
 
-        return new JsonResponse($jsonWeatherData, 200, [], true);
+        return JsonResponse::fromJsonString($jsonWeatherData);
     }
 }
