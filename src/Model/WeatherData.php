@@ -7,6 +7,7 @@ namespace App\Model;
 class WeatherData
 {
     public function __construct(
+        private $localization,
         private $main,
         private $description,
         private $averageTemperature,
@@ -15,6 +16,22 @@ class WeatherData
         private $pressure,
         private $humidity
     ) {}
+
+    /**
+     * @return mixed
+     */
+    public function getLocalization()
+    {
+        return $this->localization;
+    }
+
+    /**
+     * @param mixed $localization
+     */
+    public function setLocalization($localization): void
+    {
+        $this->localization = $localization;
+    }
 
     /**
      * @return mixed
