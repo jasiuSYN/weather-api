@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-class Coordinates extends Localization
+class Coordinates
 {
-    private string $latitude;
-    private string $longitude;
+    public function __construct(
+        private string $latitude,
+        private string $longitude
+    ) {}
 
     /**
      * @return mixed
