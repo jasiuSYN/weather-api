@@ -7,140 +7,140 @@ namespace App\Model;
 class WeatherData
 {
     public function __construct(
-        private $localization,
-        private $main,
-        private $description,
-        private $averageTemperature,
-        private $minimumTemperature,
-        private $maximumTemperature,
-        private $pressure,
-        private $humidity
+        private array $localization,
+        private string $main,
+        private string $description,
+        private int|float $averageTemperature,
+        private int|float $minimumTemperature,
+        private int|float $maximumTemperature,
+        private int|float $pressure,
+        private int|float $humidity
     ) {}
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function getLocalization()
+    public function getLocalization(): array
     {
         return $this->localization;
     }
 
     /**
-     * @param mixed $localization
+     * @param array $localization
      */
-    public function setLocalization($localization): void
+    public function setLocalization(array $localization): void
     {
         $this->localization = $localization;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getMain()
+    public function getMain(): string
     {
         return $this->main;
     }
 
     /**
-     * @param mixed $main
+     * @param string $main
      */
-    public function setMain($main): void
+    public function setMain(string $main): void
     {
         $this->main = $main;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
 
     /**
-     * @param mixed $description
+     * @param string $description
      */
-    public function setDescription($description): void
+    public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
     /**
-     * @return mixed
+     * @return float|int
      */
-    public function getAverageTemperature()
+    public function getAverageTemperature(): float|int
     {
         return $this->averageTemperature;
     }
 
     /**
-     * @param mixed $averageTemperature
+     * @param float|int $averageTemperature
      */
-    public function setAverageTemperature($averageTemperature): void
+    public function setAverageTemperature(float|int $averageTemperature): void
     {
         $this->averageTemperature = $averageTemperature;
     }
 
     /**
-     * @return mixed
+     * @return float|int
      */
-    public function getMinimumTemperature()
+    public function getMinimumTemperature(): float|int
     {
         return $this->minimumTemperature;
     }
 
     /**
-     * @param mixed $minimumTemperature
+     * @param float|int $minimumTemperature
      */
-    public function setMinimumTemperature($minimumTemperature): void
+    public function setMinimumTemperature(float|int $minimumTemperature): void
     {
         $this->minimumTemperature = $minimumTemperature;
     }
 
     /**
-     * @return mixed
+     * @return float|int
      */
-    public function getMaximumTemperature()
+    public function getMaximumTemperature(): float|int
     {
         return $this->maximumTemperature;
     }
 
     /**
-     * @param mixed $maximumTemperature
+     * @param float|int $maximumTemperature
      */
-    public function setMaximumTemperature($maximumTemperature): void
+    public function setMaximumTemperature(float|int $maximumTemperature): void
     {
         $this->maximumTemperature = $maximumTemperature;
     }
 
     /**
-     * @return mixed
+     * @return float|int
      */
-    public function getPressure()
+    public function getPressure(): float|int
     {
         return $this->pressure;
     }
 
     /**
-     * @param mixed $pressure
+     * @param float|int $pressure
      */
-    public function setPressure($pressure): void
+    public function setPressure(float|int $pressure): void
     {
         $this->pressure = $pressure;
     }
 
     /**
-     * @return mixed
+     * @return float|int
      */
-    public function getHumidity()
+    public function getHumidity(): float|int
     {
         return $this->humidity;
     }
 
     /**
-     * @param mixed $humidity
+     * @param float|int $humidity
      */
-    public function setHumidity($humidity): void
+    public function setHumidity(float|int $humidity): void
     {
         $this->humidity = $humidity;
     }
