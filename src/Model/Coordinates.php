@@ -6,28 +6,15 @@ namespace App\Model;
 
 class Coordinates
 {
-    public function __construct(
-        private float $latitude,
-        private float $longitude
-    ) {}
+    public function __construct(private string $latitude, private string $longitude) {}
 
-    public function getLatitude(): float
+    public function getLatitude(): string
     {
         return $this->latitude;
     }
 
-    public function setLatitude(float $latitude): void
-    {
-        $this->latitude = $latitude;
-    }
-
-    public function getLongitude(): float
+    public function getLongitude(): string
     {
         return $this->longitude;
-    }
-
-    public function setLongitude(float $longitude): void
-    {
-        $this->longitude = $longitude;
     }
 }

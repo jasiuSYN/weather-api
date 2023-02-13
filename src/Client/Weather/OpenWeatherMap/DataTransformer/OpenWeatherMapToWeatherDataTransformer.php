@@ -21,7 +21,7 @@ class OpenWeatherMapToWeatherDataTransformer
 
         return new WeatherData(
             name: $data['name'],
-            coordinates: new Coordinates($data['coord']['lat'], $data['coord']['lon']),
+            coordinates: new Coordinates((string)$data['coord']['lat'], (string)$data['coord']['lon']),
             weather: $data['weather'][0]['main'],
             description: $data['weather'][0]['description'],
             averageTemperature: $this->roundToInt($data['main']['temp']) ?? null,
