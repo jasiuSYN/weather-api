@@ -15,13 +15,13 @@ class OpenWeatherMapToWeatherDataTransformer
         return $value !== null ? (int)round($value) : null;
     }
 
-    public function transform(ResponseInterface $response, Coordinates $coordinates): WeatherData
+    public function transform(ResponseInterface $response): WeatherData
     {
         $data = $response->toArray();
 
         return new WeatherData(
             name: $data['name'],
-            coordinates: $coordinates,
+            coordinates: new Coordinates($data['coord']['lat'], $data['coord']['lon']),
             weather: $data['weather'][0]['main'],
             description: $data['weather'][0]['description'],
             averageTemperature: $this->roundToInt($data['main']['temp']) ?? null,

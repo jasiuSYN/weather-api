@@ -32,6 +32,6 @@ class Client implements WeatherProviderClientInterface
                 ]
             ]);
 
-        return $this->transformer->transform($response, $coordinates);
+        return $this->transformer->transform($response);
     }
 }
