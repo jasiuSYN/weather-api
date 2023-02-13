@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Util;
+namespace App\Client\Weather;
 
 use App\Model\Coordinates;
 use App\Model\WeatherData;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Util;
+namespace App\Client\Weather\OpenWeatherMap\DataTransformer;
 
 use App\Model\WeatherData;
 use Symfony\Contracts\HttpClient\ResponseInterface;

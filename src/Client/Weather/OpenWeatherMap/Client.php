@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Util;
+namespace App\Client\Weather\OpenWeatherMap;
+
+use App\Client\Weather\OpenWeatherMap\DataTransformer\OpenWeatherMapToWeatherDataTransformer;
+use App\Client\Weather\WeatherProviderClientInterface;
 
 use App\Model\Coordinates;
 use App\Model\WeatherData;
 
-use Symfony\Component\HttpClient\Exception\ClientException;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class OpenWeatherMapClient implements WeatherProviderClientInterface
+class Client implements WeatherProviderClientInterface
 {
     public function __construct(
         private HttpClientInterface $client,
