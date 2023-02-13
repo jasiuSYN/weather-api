@@ -8,5 +8,4 @@ use App\Model\WeatherData;
 interface WeatherProviderClientInterface
 {
     public function fetchWeatherForCoordinates(Coordinates $coordinates): WeatherData;
-
 }
