@@ -25,8 +25,6 @@ class GetWeatherForCoordinatesController extends AbstractController
 
         $weatherData = $this->client->fetchWeatherForCoordinates($coordinates);
 
-        $jsonWeatherData = $serializer->serialize($weatherData, 'json');
-
-        return JsonResponse::fromJsonString($jsonWeatherData);
+        return JsonResponse::fromJsonString($serializer->serialize($weatherData, 'json'));
     }
 }
