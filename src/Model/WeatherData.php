@@ -7,8 +7,9 @@ namespace App\Model;
 class WeatherData
 {
     public function __construct(
-        private array $localization,
-        private string $main,
+        private string $name,
+        private array $coordinates,
+        private string $weather,
         private string $description,
         private int|float $averageTemperature,
         private int|float $minimumTemperature,
@@ -18,35 +19,51 @@ class WeatherData
     ) {}
 
     /**
-     * @return array
+     * @return string
      */
-    public function getLocalization(): array
+    public function getName(): string
     {
-        return $this->localization;
+        return $this->name;
     }
 
     /**
-     * @param array $localization
+     * @param string $name
      */
-    public function setLocalization(array $localization): void
+    public function setName(string $name): void
     {
-        $this->localization = $localization;
+        $this->name = $name;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCoordinates(): array
+    {
+        return $this->coordinates;
+    }
+
+    /**
+     * @param array $coordinates
+     */
+    public function setCoordinates(array $coordinates): void
+    {
+        $this->coordinates = $coordinates;
     }
 
     /**
      * @return string
      */
-    public function getMain(): string
+    public function getWeather(): string
     {
-        return $this->main;
+        return $this->weather;
     }
 
     /**
-     * @param string $main
+     * @param string $weather
      */
-    public function setMain(string $main): void
+    public function setWeather(string $weather): void
     {
-        $this->main = $main;
+        $this->weather = $weather;
     }
 
     /**

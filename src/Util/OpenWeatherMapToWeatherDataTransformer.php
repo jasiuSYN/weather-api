@@ -14,8 +14,9 @@ class OpenWeatherMapToWeatherDataTransformer
         $data = $response->toArray();
 
         return new WeatherData(
-            localization: $data['coord'],
-            main: $data['weather'][0]['main'],
+            name: $data['name'],
+            coordinates: $data['coord'],
+            weather: $data['weather'][0]['main'],
             description: $data['weather'][0]['description'],
             averageTemperature: $data['main']['temp'],
             minimumTemperature: $data['main']['temp_min'],
