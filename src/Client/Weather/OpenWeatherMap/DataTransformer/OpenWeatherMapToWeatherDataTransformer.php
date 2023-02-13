@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Client\Weather\OpenWeatherMap\DataTransformer;
 
+use App\Model\Coordinates;
 use App\Model\WeatherData;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -14,13 +15,13 @@ class OpenWeatherMapToWeatherDataTransformer
         return $value !== null ? (int)round($value) : null;
     }
 
-    public function transform(ResponseInterface $response): WeatherData
+    public function transform(ResponseInterface $response, Coordinates $coordinates): WeatherData
     {
         $data = $response->toArray();
 
         return new WeatherData(
             name: $data['name'],
-            coordinates: $data['coord'],
+            coordinates: $coordinates,
             weather: $data['weather'][0]['main'],
             description: $data['weather'][0]['description'],
             averageTemperature: $this->roundToInt($data['main']['temp']) ?? null,

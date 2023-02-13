@@ -8,7 +8,7 @@ class WeatherData
 {
     public function __construct(
         private string $name,
-        private array $coordinates,
+        private Coordinates $coordinates,
         private string $weather,
         private string $description,
         private int $averageTemperature,
@@ -28,12 +28,12 @@ class WeatherData
         $this->name = $name;
     }
 
-    public function getCoordinates(): array
+    public function getCoordinates(): Coordinates
     {
         return $this->coordinates;
     }
 
-    public function setCoordinates(array $coordinates): void
+    public function setCoordinates(Coordinates $coordinates): void
     {
         $this->coordinates = $coordinates;
     }
