@@ -11,34 +11,22 @@ class Coordinates
         private string $longitude
     ) {}
 
-    /**
-     * @return mixed
-     */
-    public function getLatitude()
+    public function getLatitude(): string
     {
         return $this->latitude;
     }
 
-    /**
-     * @param mixed $latitude
-     */
-    public function setLatitude($latitude): void
+    public function setLatitude(string $latitude): void
     {
         $this->latitude = $latitude;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getLongitude()
+    public function getLongitude(): string
     {
         return $this->longitude;
     }
 
-    /**
-     * @param mixed $longitude
-     */
-    public function setLongitude($longitude): void
+    public function setLongitude(string $longitude): void
     {
         $this->longitude = $longitude;
     }
