@@ -9,6 +9,11 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class OpenWeatherMapToWeatherDataTransformer
 {
+    private function roundToInt(float|int|null $value): ?int
+    {
+        return $value !== null ? (int)round($value) : null;
+    }
+
     public function transform(ResponseInterface $response): WeatherData
     {
         $data = $response->toArray();
@@ -18,9 +23,9 @@ class OpenWeatherMapToWeatherDataTransformer
             coordinates: $data['coord'],
             weather: $data['weather'][0]['main'],
             description: $data['weather'][0]['description'],
-            averageTemperature: $data['main']['temp'],
-            minimumTemperature: $data['main']['temp_min'],
-            maximumTemperature: $data['main']['temp_max'],
+            averageTemperature: $this->roundToInt($data['main']['temp']) ?? null,
+            minimumTemperature: $this->roundToInt($data['main']['temp_min']) ?? null,
+            maximumTemperature: $this->roundToInt($data['main']['temp_max']) ?? null,
             pressure: $data['main']['pressure'],
             humidity: $data['main']['humidity']
         );
