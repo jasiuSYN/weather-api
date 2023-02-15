@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-class Geocode
+class GeocodeRequest
 {
     public function __construct(private string $localization) {}
 

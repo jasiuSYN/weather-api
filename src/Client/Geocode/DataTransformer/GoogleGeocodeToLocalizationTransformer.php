@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Client\Localizations\GoogleGeocode\DataTransformer;
+namespace App\Client\Geocode\DataTransformer;
 
 use App\Model\Coordinates;
 use App\Model\Localization;
@@ -19,7 +19,7 @@ class GoogleGeocodeToLocalizationTransformer
         foreach ($data['results'] as $value)
         {
             $localization = new Localization(
-                address: $value['formatted_address'],
+                name: $value['formatted_address'],
                 coordinates: new Coordinates(
                     latitude: (string)$value['geometry']['location']['lat'],
                     longitude: (string)$value['geometry']['location']['lng']

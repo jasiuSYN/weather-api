@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Client\Localizations\GoogleGeocode\GoogleClient;
-use App\Model\Geocode;
+use App\Client\Geocode\GeocodeProviderClientInterface;
+use App\Model\GeocodeRequest;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,14 +16,18 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class GetLocalizationsForGeocodeController extends AbstractController
 {
-    public function __construct(private GoogleClient $client) {}
+    public function __construct() {}
 
     #[Route('api/localizations-for-geocode', name: 'localizations-geocode')]
-    public function __invoke(Request $request, SerializerInterface $serializer, ObjectNormalizer $normalizer): JsonResponse
-    {
-        $geocode = $normalizer->denormalize($request->query->all(), Geocode::class);
+    public function __invoke(
+        Request $request,
+        SerializerInterface $serializer,
+        ObjectNormalizer $normalizer,
+        GeocodeProviderClientInterface $client
+    ): JsonResponse {
+        $geocodeRequest = $normalizer->denormalize($request->query->all(), GeocodeRequest::class);
 
-        $localizationsData = $this->client->fetchLocalizationsForGeocode($geocode);
+        $localizationsData = $client->geocode($geocodeRequest);
 
         return JsonResponse::fromJsonString($serializer->serialize($localizationsData, 'json'));
     }
