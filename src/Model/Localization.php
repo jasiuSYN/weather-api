@@ -7,19 +7,19 @@ namespace App\Model;
 class Localization
 {
     public function __construct(
-        private string $address,
+        private string $name,
         private Coordinates $coordinates,
         private array $types
     ) {}
 
-    public function getAddress(): string
+    public function getName(): string
     {
-        return $this->address;
+        return $this->name;
     }
 
-    public function setAddress(string $address): void
+    public function setName(string $name): void
     {
-        $this->address = $address;
+        $this->name = $name;
     }
 
     public function getCoordinates(): Coordinates
