@@ -26,8 +26,7 @@ class GoogleGeocodeToLocalizationTransformer
                 coordinates: new Coordinates(
                     latitude: (string)$value['geometry']['location']['lat'],
                     longitude: (string)$value['geometry']['location']['lng']
-                    ),
-                types: $value['types']
+                    )
             );
             $localizations[] = $localization;
         }
