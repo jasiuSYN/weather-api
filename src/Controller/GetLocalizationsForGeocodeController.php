@@ -16,8 +16,6 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class GetLocalizationsForGeocodeController extends AbstractController
 {
-    public function __construct() {}
-
     #[Route('api/localizations-for-geocode', name: 'localizations-geocode')]
     public function __invoke(
         Request $request,
