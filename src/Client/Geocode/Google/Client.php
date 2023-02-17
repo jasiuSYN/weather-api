@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Client\Geocode;
+namespace App\Client\Geocode\Google;
 
 use App\Client\Geocode\DataTransformer\GoogleGeocodeToLocalizationTransformer;
+use App\Client\Geocode\GeocodeProviderClientInterface;
 use App\Model\GeocodeRequest;
 use App\Model\Localization;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class GoogleClient implements GeocodeProviderClientInterface
+class Client implements GeocodeProviderClientInterface
 {
     public function __construct(
         private HttpClientInterface $client,
