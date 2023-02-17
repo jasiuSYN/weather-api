@@ -10,6 +10,9 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class GoogleGeocodeToLocalizationTransformer
 {
+    /**
+     * @return Localization[]
+     */
     public function transformFromGeocodeApi(ResponseInterface $response): array
     {
         $data = $response->toArray();
