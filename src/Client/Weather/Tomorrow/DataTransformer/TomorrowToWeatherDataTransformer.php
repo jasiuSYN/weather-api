@@ -53,12 +53,15 @@ private function roundToInt(float|int|null $value): ?int
         $data = $response->toArray();
 
         return new WeatherData(
+            name: $data['location']['name'] ?? "",
             coordinates: new Coordinates((string)$data['location']['lat'], (string)$data['location']['lon']),
             weather: $this->getWeatherDescription($data['data']['values']['weatherCode']),
+            description: "",
             averageTemperature: $this->roundToInt($data['data']['values']['temperature']) ?? null,
+            minimumTemperature: null,
+            maximumTemperature: null,
             pressure: $data['data']['values']['pressureSurfaceLevel'],
-            humidity: $data['data']['values']['humidity'],
-            name: $data['location']['name'] ?? ""
+            humidity: $data['data']['values']['humidity']
         );
     }
 }
