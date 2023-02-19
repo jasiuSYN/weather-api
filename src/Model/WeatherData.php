@@ -11,7 +11,7 @@ class WeatherData
         private Coordinates $coordinates,
         private string $weather,
         private string $description,
-        private int $averageTemperature,
+        private ?int $averageTemperature,
         private ?int $minimumTemperature,
         private ?int $maximumTemperature,
         private int|float $pressure,
