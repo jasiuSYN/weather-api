@@ -7,15 +7,15 @@ namespace App\Model;
 class WeatherData
 {
     public function __construct(
-        private string $name,
         private Coordinates $coordinates,
         private string $weather,
-        private string $description,
         private int $averageTemperature,
-        private int $minimumTemperature,
-        private int $maximumTemperature,
         private int|float $pressure,
-        private int|float $humidity
+        private int|float $humidity,
+        private ?string $name = "",
+        private ?string $description = "",
+        private ?int $minimumTemperature = null,
+        private ?int $maximumTemperature = null,
     ) {}
 
     public function getName(): string
