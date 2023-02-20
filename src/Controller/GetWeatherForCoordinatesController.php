@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Client\Weather\OpenWeatherMap\Client;
+//use App\Client\Weather\OpenWeatherMap\Client;
+use App\Client\Weather\Tomorrow\Client;
+use App\Client\Weather\WeatherProviderClientInterface;
 use App\Model\Coordinates;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,7 +17,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class GetWeatherForCoordinatesController extends AbstractController
 {
-    public function __construct(private Client $client) {}
+    public function __construct(private WeatherProviderClientInterface $client) {}
 
     #[Route('/api/weather-by-coordinates', name: 'weather-coordinates')]
     public function __invoke(Request $request, SerializerInterface $serializer, ObjectNormalizer $normalizer): JsonResponse
