@@ -37,16 +37,16 @@ class TomorrowToWeatherDataTransformer
         '8000' => 'Thunderstorm',
 ];
 
-private function roundToInt(float|int|null $value): ?int
+    private function roundToInt(float|int|null $value): ?int
     {
         return $value !== null ? (int)round($value) : null;
     }
 
-    private function getWeatherDescription(int $code): string
+    private function resolveWeatherCode(int $code): string
     {
         if (self::$weatherCode[(string)$code])
             return self::$weatherCode[$code];
-        return (string)$code;
+        return self::$weatherCode['0'];
     }
     public function transform(ResponseInterface $response): WeatherData
     {
@@ -55,13 +55,13 @@ private function roundToInt(float|int|null $value): ?int
         return new WeatherData(
             name: $data['location']['name'] ?? "",
             coordinates: new Coordinates((string)$data['location']['lat'], (string)$data['location']['lon']),
-            weather: $this->getWeatherDescription($data['data']['values']['weatherCode']),
-            description: "",
+            weather: $this->resolveWeatherCode($data['data']['values']['weatherCode']),
+            description: null,
             averageTemperature: $this->roundToInt($data['data']['values']['temperature']) ?? null,
             minimumTemperature: null,
             maximumTemperature: null,
-            pressure: $data['data']['values']['pressureSurfaceLevel'],
-            humidity: $data['data']['values']['humidity']
+            pressure: $this->roundToInt($data['data']['values']['pressureSurfaceLevel']),
+            humidity: $this->roundToInt($data['data']['values']['humidity'])
         );
     }
 }

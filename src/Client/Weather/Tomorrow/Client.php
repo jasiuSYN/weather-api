@@ -23,7 +23,11 @@ class Client implements WeatherProviderClientInterface
         $response = $this->client->request('GET', 'https://api.tomorrow.io/v4/weather/realtime',
             [
                 'query' => [
-                    'location' => $coordinates->getLatitude() .', ' .$coordinates->getLongitude(),
+                    'location' => sprintf(
+                        '%s, %s',
+                        $coordinates->getLatitude(),
+                        $coordinates->getLongitude()
+                    ),
                     'units' => 'metric',
                     'apikey' => $this->tomorrowApiKey,
                 ]

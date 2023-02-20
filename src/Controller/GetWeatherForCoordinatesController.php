@@ -17,14 +17,14 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class GetWeatherForCoordinatesController extends AbstractController
 {
-    public function __construct(private WeatherProviderClientInterface $openWeatherClient) {}
+    public function __construct(private WeatherProviderClientInterface $client) {}
 
     #[Route('/api/weather-by-coordinates', name: 'weather-coordinates')]
     public function __invoke(Request $request, SerializerInterface $serializer, ObjectNormalizer $normalizer): JsonResponse
     {
         $coordinates = $normalizer->denormalize($request->query->all(), Coordinates::class);
 
-        $weatherData = $this->openWeatherClient->fetchWeatherForCoordinates($coordinates);
+        $weatherData = $this->client->fetchWeatherForCoordinates($coordinates);
 
         return JsonResponse::fromJsonString($serializer->serialize($weatherData, 'json'));
     }
