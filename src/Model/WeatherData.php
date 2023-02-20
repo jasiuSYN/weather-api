@@ -10,12 +10,12 @@ class WeatherData
         private string $name,
         private Coordinates $coordinates,
         private string $weather,
-        private ?string $description,
-        private ?int $averageTemperature,
-        private ?int $minimumTemperature,
-        private ?int $maximumTemperature,
-        private int $pressure,
-        private int $humidity
+        private string $description,
+        private int $averageTemperature,
+        private int $minimumTemperature,
+        private int $maximumTemperature,
+        private int|float $pressure,
+        private int|float $humidity
     ) {}
 
     public function getName(): string
