@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class GetWeatherForCoordinatesController extends AbstractController
 {
-    public function __construct(private WeatherProviderClientInterface $client) {}
+    public function __construct(private Client $client) {}
 
     #[Route('/api/weather-by-coordinates', name: 'weather-coordinates')]
     public function __invoke(Request $request, SerializerInterface $serializer, ObjectNormalizer $normalizer): JsonResponse
