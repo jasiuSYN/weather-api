@@ -13,8 +13,6 @@ services:
         bind:
             $openWeatherMapApiKey: '%env(OPEN_WEATHER_MAP_API_KEY)%'
             $googleMapsApiKey: '%env(GOOGLE_MAPS_API_KEY)%'
-            $tomorrowApiKey: '%env(TOMORROW_API_KEY)%'
-            App\Client\Weather\WeatherProviderClientInterface: '@App\Client\Weather\Tomorrow\Client'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
