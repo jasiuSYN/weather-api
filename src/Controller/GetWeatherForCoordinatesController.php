@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Client\Weather\OpenWeatherMap\Client;
+use App\Client\Weather\WeatherProviderClientInterface;
 use App\Model\Coordinates;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
