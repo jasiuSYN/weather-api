@@ -12,15 +12,23 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class GetWeatherForCoordinatesController extends AbstractController
 {
     public function __construct(private WeatherProviderClientInterface $client) {}
 
     #[Route('/api/weather-by-coordinates', name: 'weather-coordinates')]
-    public function __invoke(Request $request, SerializerInterface $serializer, ObjectNormalizer $normalizer): JsonResponse
+    public function __invoke(Request $request, SerializerInterface $serializer, ObjectNormalizer $normalizer, ValidatorInterface $validator): JsonResponse
     {
         $coordinates = $normalizer->denormalize($request->query->all(), Coordinates::class);
+
+        $errors = $validator->validate($coordinates);
+
+        if ($errors->count() > 0) {
+
+            return JsonResponse::fromJsonString((string)$errors, 400);
+        }
 
         $weatherData = $this->client->fetchWeatherForCoordinates($coordinates);
 
