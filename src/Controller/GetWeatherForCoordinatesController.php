@@ -6,6 +6,8 @@ namespace App\Controller;
 
 use App\Client\Weather\WeatherProviderClientInterface;
 use App\Model\Coordinates;
+use App\Model\Errors\Error;
+use App\Model\Errors\ErrorList;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +29,14 @@ class GetWeatherForCoordinatesController extends AbstractController
 
         if ($errors->count() > 0) {
 
-            return JsonResponse::fromJsonString((string)$errors, 400);
+            $errorList = new ErrorList();
+
+            foreach ($errors as $error) {
+
+                $errorList->addError(new Error($error->getCode()));
+            }
+
+            return JsonResponse::fromJsonString($serializer->serialize($errorList, 'json'), 400);
         }
 
         $weatherData = $this->client->fetchWeatherForCoordinates($coordinates);
