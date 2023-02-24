@@ -8,18 +8,24 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class Coordinates
 {
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(
+        message: 'WEATHER_REQUEST_PARAMETER_IS_EMPTY'
+    )]
     #[Assert\Range(
+        notInRangeMessage: 'WEATHER_REQUEST_LATITUDE_IS_OUT_OF_RANGE',
+        invalidMessage: 'WEATHER_REQUEST_PARAMETER_IS_NOT_VALID_NUMBER',
         min: -90,
-        max: 90,
-        notInRangeMessage: 'Latitude must be between {{ min }} and {{ max }}'
+        max: 90
     )]
     private string $latitude;
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(
+        message: 'WEATHER_REQUEST_PARAMETER_IS_EMPTY'
+    )]
     #[Assert\Range(
+        notInRangeMessage: 'WEATHER_REQUEST_LONGITUDE_IS_OUT_OF_RANGE',
+        invalidMessage: 'WEATHER_REQUEST_PARAMETER_IS_NOT_VALID_NUMBER',
         min: -180,
-        max: 180,
-        notInRangeMessage: 'Longitude must be between {{ min }} and {{ max }}'
+        max: 180
     )]
     private string $longitude;
     public function __construct(string $latitude, string $longitude)

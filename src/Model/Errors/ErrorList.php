@@ -17,9 +17,6 @@ class ErrorList
         return $this->errorList;
     }
 
-    /**
-     * @return array
-     */
     public function getErrorList(): array
     {
         return $this->errorList;

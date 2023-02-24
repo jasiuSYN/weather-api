@@ -33,7 +33,7 @@ class GetWeatherForCoordinatesController extends AbstractController
 
             foreach ($errors as $error) {
 
-                $errorList->addError(new Error($error->getCode()));
+                $errorList->addError(new Error($error->getCode(), $error->getMessage()));
             }
 
             return JsonResponse::fromJsonString($serializer->serialize($errorList, 'json'), 400);
