@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ErrorsList
 {
-    private array $errorList = [];
+    private array $errors = [];
 
     public function __construct(private int $httpStatusCode = Response::HTTP_BAD_REQUEST) {}
 
@@ -17,13 +17,13 @@ class ErrorsList
      */
     public function addError(Error $error): array
     {
-        $this->errorList[] = $error;
-        return $this->errorList;
+        $this->errors[] = $error;
+        return $this->errors;
     }
 
     public function getErrorList(): array
     {
-        return $this->errorList;
+        return $this->errors;
     }
 
     public function getHttpStatusCode(): int

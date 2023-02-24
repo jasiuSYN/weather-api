@@ -7,7 +7,7 @@ namespace App\Model\Errors;
 class Error
 {
     private string $code;
-    private string $message;
+    private ?string $message;
     private ?string $context;
 
     public function __construct($code, $message, $context=null)
@@ -22,7 +22,7 @@ class Error
         return $this->code;
     }
 
-    public function getMessage(): string
+    public function getMessage(): ?string
     {
         return $this->message;
     }

@@ -39,7 +39,7 @@ class GetWeatherForCoordinatesController extends AbstractController
 
                 $errorList->addError(
                     new Error($error->getMessage(),
-                        "",
+                        null,
                         $error->getPropertyPath())
                 );
             }
