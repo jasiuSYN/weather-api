@@ -8,11 +8,13 @@ class Error
 {
     private string $code;
     private string $message;
+    private ?string $context;
 
-    public function __construct($code, $message)
+    public function __construct($code, $message, $context=null)
     {
         $this->code = $code;
         $this->message = $message;
+        $this->context = $context;
     }
 
     public function getCode(): string
@@ -23,5 +25,10 @@ class Error
     public function getMessage(): string
     {
         return $this->message;
+    }
+
+    public function getContext(): ?string
+    {
+        return $this->context;
     }
 }
