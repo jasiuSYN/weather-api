@@ -8,6 +8,8 @@ use App\Client\Weather\WeatherProviderClientInterface;
 use App\Model\Coordinates;
 use App\Model\Errors\Error;
 use App\Model\Errors\ErrorsList;
+use App\Response\BadRequestApiResponse;
+use App\Response\SuccessApiResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +21,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class GetWeatherForCoordinatesController extends AbstractController
 {
     public function __construct(
-        private SerializerInterface $serializer,
         private ObjectNormalizer $normalizer,
         private ValidatorInterface $validator,
         private WeatherProviderClientInterface $client) {}
@@ -44,14 +45,11 @@ class GetWeatherForCoordinatesController extends AbstractController
                 );
             }
 
-            return JsonResponse::fromJsonString(
-                $this->serializer->serialize($errorList, 'json'),
-                $errorList->getHttpStatusCode()
-            );
+            return new BadRequestApiResponse($errorList);
         }
 
         $weatherData = $this->client->fetchWeatherForCoordinates($coordinates);
 
-        return JsonResponse::fromJsonString($this->serializer->serialize($weatherData, 'json'));
+        return new SuccessApiResponse($weatherData);
     }
 }
