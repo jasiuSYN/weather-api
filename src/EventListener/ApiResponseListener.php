@@ -7,40 +7,30 @@ namespace App\EventListener;
 use App\Response\ApiResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ApiResponseListener
 {
-    public function onKernelView(ViewEvent $event): void
+    public function __construct(private SerializerInterface $serializer) {}
+
+    public function onKernelView(ViewEvent $event)
     {
         $value = $event->getControllerResult();
 
-        if (!$value instanceof ApiResponse) {
-            return;
+        if ($value->getData())
+        {
+            $data = $this->serializer->serialize($value->getData(), 'json');
         }
-
-        $data = $value->getData();
-        $errors = $value->getErrors();
-        $statusCode = $value->getHttpStatusCode();
-
-        $jsonResponse = new JsonResponse($this->format($data, $errors), $statusCode);
-
-        $event->setResponse($jsonResponse);
-
-    }
-    private function format(mixed $data, mixed $errors): array
-    {
-        if ($data === null) {
+        elseif ($value->getErrors())
+        {
+            $data = $this->serializer->serialize($value->getErrors(), 'json');
+        }
+        else
             $data = new \ArrayObject();
-        }
 
-        $response = [
-            'data' => $data,
-        ];
+        $response = JsonResponse::fromJsonString($data, $value->getHttpStatusCode());
 
-        if ($errors) {
-            $response['errors'] = $errors;
-        }
+        $event->setResponse($response);
 
-        return $response;
     }
 }
