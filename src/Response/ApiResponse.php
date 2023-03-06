@@ -4,28 +4,23 @@ declare(strict_types=1);
 
 namespace App\Response;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
-
-class ApiResponse extends JsonResponse
+class ApiResponse
 {
-    public function __construct(mixed $data, mixed $errors, int $httpStatusCode)
+    public function __construct(private mixed $data, private mixed $errors, private int $httpStatusCode) {}
+
+    public function getData(): mixed
     {
-        parent::__construct($this->format($data, $errors), $httpStatusCode);
+        return $this->data;
     }
-    private function format(mixed $data, mixed $errors): array
+
+    public function getErrors(): mixed
     {
-        if ($data === null) {
-            $data = new \ArrayObject();
-        }
-
-        $response = [
-            'data' => $data,
-        ];
-
-        if ($errors) {
-            $response['errors'] = $errors;
-        }
-
-        return $response;
+        return $this->errors;
     }
+
+    public function getHttpStatusCode(): int
+    {
+        return $this->httpStatusCode;
+    }
+
 }
