@@ -23,7 +23,9 @@ class GetWeatherForCoordinatesController extends AbstractController
     public function __construct(
         private ObjectNormalizer $normalizer,
         private ValidatorInterface $validator,
-        private WeatherProviderClientInterface $client) {}
+        private WeatherProviderClientInterface $client
+    ) {
+    }
 
     #[Route('/api/weather-by-coordinates', name: 'weather-coordinates')]
     public function __invoke(Request $request): ApiResponse
@@ -33,15 +35,15 @@ class GetWeatherForCoordinatesController extends AbstractController
         $errors = $this->validator->validate($coordinates);
 
         if ($errors->count() > 0) {
-
             $errorList = new ErrorsList();
 
             foreach ($errors as $error) {
-
                 $errorList->addError(
-                    new Error($error->getMessage(),
+                    new Error(
+                        $error->getMessage(),
                         null,
-                        $error->getPropertyPath())
+                        $error->getPropertyPath()
+                    )
                 );
             }
 

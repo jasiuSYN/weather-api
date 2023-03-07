@@ -6,7 +6,9 @@ namespace App\Model;
 
 class GeocodeRequest
 {
-    public function __construct(private string $localization) {}
+    public function __construct(private string $localization)
+    {
+    }
 
     public function getLocalization(): string
     {

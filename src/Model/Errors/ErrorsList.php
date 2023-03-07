@@ -10,7 +10,9 @@ class ErrorsList
 {
     private array $errors = [];
 
-    public function __construct(private int $httpStatusCode = Response::HTTP_BAD_REQUEST) {}
+    public function __construct(private int $httpStatusCode = Response::HTTP_BAD_REQUEST)
+    {
+    }
 
     /**
      * @return ErrorsList[]
