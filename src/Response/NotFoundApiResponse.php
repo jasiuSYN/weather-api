@@ -8,8 +8,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class NotFoundApiResponse extends ApiResponse
 {
-    public function __construct(mixed $errors)
+    public function __construct(mixed $error)
     {
-        parent::__construct(errors: $errors, httpStatusCode: Response::HTTP_NOT_FOUND);
+        parent::__construct(errors: $error, httpStatusCode: Response::HTTP_NOT_FOUND);
     }
 }

@@ -10,6 +10,6 @@ class SuccessApiResponse extends ApiResponse
 {
     public function __construct(mixed $data)
     {
-        parent::__construct($data, null, Response::HTTP_OK);
+        parent::__construct($data);
     }
 }

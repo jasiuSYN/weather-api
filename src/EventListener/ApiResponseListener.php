@@ -11,26 +11,26 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class ApiResponseListener
 {
-    public function __construct(private SerializerInterface $serializer) {}
-
-    public function onKernelView(ViewEvent $event)
+    public function __construct(private SerializerInterface $serializer)
     {
-        $value = $event->getControllerResult();
+    }
 
-        if ($value->getData())
-        {
-            $data = $this->serializer->serialize($value->getData(), 'json');
-        }
-        elseif ($value->getErrors())
-        {
-            $data = $this->serializer->serialize($value->getErrors(), 'json');
-        }
-        else
-            $data = new \ArrayObject();
+    public function onKernelView(ViewEvent $event): void
+    {
+        $apiResponse = $event->getControllerResult();
 
-        $response = JsonResponse::fromJsonString($data, $value->getHttpStatusCode());
+        if (!$apiResponse instanceof ApiResponse) {
+            return;
+        }
+
+        if ($apiResponse->getData()) {
+            $body = $this->serializer->serialize($apiResponse->getData(), 'json');
+        } elseif ($apiResponse->getErrors()) {
+            $body = $this->serializer->serialize($apiResponse->getErrors(), 'json');
+        }
+
+        $response = JsonResponse::fromJsonString($body, $apiResponse->getHttpStatusCode());
 
         $event->setResponse($response);
-
     }
 }

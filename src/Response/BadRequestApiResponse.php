@@ -10,6 +10,6 @@ class BadRequestApiResponse extends ApiResponse
 {
     public function __construct(mixed $errors)
     {
-        parent::__construct(null, $errors, Response::HTTP_BAD_REQUEST);
+        parent::__construct(errors: $errors, httpStatusCode: Response::HTTP_BAD_REQUEST);
     }
 }
