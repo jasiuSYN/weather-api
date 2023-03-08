@@ -27,6 +27,8 @@ class ApiResponseListener
             $body = $this->serializer->serialize($apiResponse->getData(), 'json');
         } elseif ($apiResponse->getErrors()) {
             $body = $this->serializer->serialize($apiResponse->getErrors(), 'json');
+        } else {
+            return;
         }
 
         $response = JsonResponse::fromJsonString($body, $apiResponse->getHttpStatusCode());
