@@ -6,9 +6,7 @@ namespace App\Controller;
 
 use App\Client\Weather\WeatherProviderClientInterface;
 use App\Model\Coordinates;
-use App\Model\Errors\Error;
-use App\Model\Errors\ErrorsList;
-use App\Model\Errors\ValidationErrorsToErrorListTransformer;
+use App\Utility\Errors\ValidationErrorsToErrorListTransformer;
 use App\Response\ApiResponse;
 use App\Response\BadRequestApiResponse;
 use App\Response\SuccessApiResponse;

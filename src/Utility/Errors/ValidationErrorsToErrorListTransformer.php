@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Model\Errors;
+namespace App\Utility\Errors;
 
+use App\Model\Errors\Error;
+use App\Model\Errors\ErrorsList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 class ValidationErrorsToErrorListTransformer
