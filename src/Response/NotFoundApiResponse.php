@@ -10,6 +10,9 @@ class NotFoundApiResponse extends ApiResponse
 {
     public function __construct(mixed $error)
     {
-        parent::__construct(errors: $error, httpStatusCode: Response::HTTP_NOT_FOUND);
+        parent::__construct(
+            errors: $error,
+            httpStatusCode: Response::HTTP_NOT_FOUND
+        );
     }
 }

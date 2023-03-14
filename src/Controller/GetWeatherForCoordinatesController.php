@@ -8,6 +8,7 @@ use App\Client\Weather\WeatherProviderClientInterface;
 use App\Model\Coordinates;
 use App\Model\Errors\Error;
 use App\Model\Errors\ErrorsList;
+use App\Model\Errors\ValidationErrorsToErrorListTransformer;
 use App\Response\ApiResponse;
 use App\Response\BadRequestApiResponse;
 use App\Response\SuccessApiResponse;
@@ -23,7 +24,8 @@ class GetWeatherForCoordinatesController extends AbstractController
     public function __construct(
         private ObjectNormalizer $normalizer,
         private ValidatorInterface $validator,
-        private WeatherProviderClientInterface $client
+        private WeatherProviderClientInterface $client,
+        private ValidationErrorsToErrorListTransformer $errorListTransformer
     ) {
     }
 
@@ -35,17 +37,7 @@ class GetWeatherForCoordinatesController extends AbstractController
         $errors = $this->validator->validate($coordinates);
 
         if ($errors->count() > 0) {
-            $errorList = new ErrorsList();
-
-            foreach ($errors as $error) {
-                $errorList->addError(
-                    new Error(
-                        $error->getMessage(),
-                        null,
-                        $error->getPropertyPath()
-                    )
-                );
-            }
+            $errorList = $this->errorListTransformer->transformToErrorList($errors);
 
             return new BadRequestApiResponse($errorList);
         }

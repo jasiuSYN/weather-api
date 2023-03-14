@@ -30,7 +30,7 @@ class GetLocalizationsForGeocodeController extends AbstractController
 
         $localizationsData = $client->geocode($geocodeRequest);
 
-        if ($localizationsData == null) {
+        if ($localizationsData === []) {
             return new NotFoundApiResponse(error: ["code" => "not_found"]);
         }
 
