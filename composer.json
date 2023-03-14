@@ -22,7 +22,8 @@
         "symfony/runtime": "6.2.*",
         "symfony/serializer": "6.2.*",
         "symfony/validator": "6.2.*",
-        "symfony/yaml": "6.2.*"
+        "symfony/yaml": "6.2.*",
+        "squizlabs/php_codesniffer": "3.*"
     },
     "config": {
         "allow-plugins": {

@@ -10,7 +10,7 @@ class Error
     private ?string $message;
     private ?string $context;
 
-    public function __construct($code, $message, $context=null)
+    public function __construct($code, $message, $context = null)
     {
         $this->code = $code;
         $this->message = $message;
