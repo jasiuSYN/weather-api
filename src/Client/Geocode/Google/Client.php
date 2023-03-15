@@ -16,20 +16,24 @@ class Client implements GeocodeProviderClientInterface
         private HttpClientInterface $client,
         private string $googleMapsApiKey,
         private GoogleGeocodeToLocalizationTransformer $transformer
-    ) {}
+    ) {
+    }
 
     /**
      * @return Localization[]
      */
     public function geocode(GeocodeRequest $geocode): array
     {
-        $response = $this->client->request('GET', 'https://maps.googleapis.com/maps/api/geocode/json',
+        $response = $this->client->request(
+            'GET',
+            'https://maps.googleapis.com/maps/api/geocode/json',
             [
                 'query' => [
                     'address' => $geocode->getLocalization(),
                     'key' => $this->googleMapsApiKey
                 ]
-            ]);
+            ]
+        );
 
         return $this->transformer->transformFromGeocodeApi($response);
     }

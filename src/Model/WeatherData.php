@@ -16,7 +16,8 @@ class WeatherData
         private ?int $maximumTemperature,
         private int $pressure,
         private int $humidity
-    ) {}
+    ) {
+    }
 
     public function getName(): string
     {

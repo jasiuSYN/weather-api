@@ -19,14 +19,13 @@ class GoogleGeocodeToLocalizationTransformer
 
         $localizations = [];
 
-        foreach ($data['results'] as $value)
-        {
+        foreach ($data['results'] as $value) {
             $localization = new Localization(
                 name: $value['formatted_address'],
                 coordinates: new Coordinates(
                     latitude: (string)$value['geometry']['location']['lat'],
                     longitude: (string)$value['geometry']['location']['lng']
-                    )
+                )
             );
             $localizations[] = $localization;
         }

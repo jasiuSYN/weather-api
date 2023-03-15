@@ -7,6 +7,9 @@ namespace App\Controller;
 use App\Client\Geocode\GeocodeProviderClientInterface;
 use App\Model\GeocodeRequest;
 
+use App\Response\ApiResponse;
+use App\Response\NotFoundApiResponse;
+use App\Response\SuccessApiResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,11 +25,15 @@ class GetLocalizationsForGeocodeController extends AbstractController
         SerializerInterface $serializer,
         ObjectNormalizer $normalizer,
         GeocodeProviderClientInterface $client
-    ): JsonResponse {
+    ): ApiResponse {
         $geocodeRequest = $normalizer->denormalize($request->query->all(), GeocodeRequest::class);
 
         $localizationsData = $client->geocode($geocodeRequest);
 
-        return JsonResponse::fromJsonString($serializer->serialize($localizationsData, 'json'));
+        if ($localizationsData === []) {
+            return new NotFoundApiResponse(error: ["code" => "not_found"]);
+        }
+
+        return new SuccessApiResponse($localizationsData);
     }
 }
