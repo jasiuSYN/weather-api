@@ -22,12 +22,12 @@ class User
     #[ORM\Column(length: 255)]
     private string $authToken;
 
-    #[ORM\OneToMany(mappedBy: 'userId', targetEntity: Notification::class, orphanRemoval: true)]
-    private Collection $notifications;
+    #[ORM\OneToMany(mappedBy: 'userId', targetEntity: NotificationDefinition::class, orphanRemoval: true)]
+    private Collection $notificationDefinitions;
 
     public function __construct()
     {
-        $this->notifications = new ArrayCollection();
+        $this->notificationDefinitions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -60,29 +60,29 @@ class User
     }
 
     /**
-     * @return Collection<int, Notification>
+     * @return Collection<int, NotificationDefinition>
      */
-    public function getNotifications(): Collection
+    public function getNotificationDefinitions(): Collection
     {
-        return $this->notifications;
+        return $this->notificationDefinitions;
     }
 
-    public function addNotification(Notification $notification): self
+    public function addNotificationDefinition(NotificationDefinition $notificationDefinitions): self
     {
-        if (!$this->notifications->contains($notification)) {
-            $this->notifications->add($notification);
-            $notification->setUserId($this);
+        if (!$this->notificationDefinitions->contains($notificationDefinitions)) {
+            $this->notificationDefinitions->add($notificationDefinitions);
+            $notificationDefinitions->setUserId($this);
         }
 
         return $this;
     }
 
-    public function removeNotification(Notification $notification): self
+    public function removeNotificationDefinition(NotificationDefinition $notificationDefinitions): self
     {
-        if ($this->notifications->removeElement($notification)) {
+        if ($this->notificationDefinitions->removeElement($notificationDefinitions)) {
             // set the owning side to null (unless already changed)
-            if ($notification->getUserId() === $this) {
-                $notification->setUserId(null);
+            if ($notificationDefinitions->getUserId() === $this) {
+                $notificationDefinitions->setUserId(null);
             }
         }
 

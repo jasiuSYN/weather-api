@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\NotificationRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: NotificationRepository::class)]
@@ -13,68 +14,83 @@ class Notification
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(nullable: true)]
-    private array $coordinates = [];
-
     #[ORM\ManyToOne(inversedBy: 'notifications')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $userId = null;
+    private ?NotificationDefinition $definitionId = null;
 
     #[ORM\Column]
-    private ?bool $isConfirmed = null;
+    private ?bool $status = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $confirmationToken = null;
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $updatedAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $sentAt = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getCoordinates(): array
+    public function getDefinitionId(): ?NotificationDefinition
     {
-        return $this->coordinates;
+        return $this->definitionId;
     }
 
-    public function setCoordinates(?array $coordinates): self
+    public function setDefinitionId(?NotificationDefinition $definitionId): self
     {
-        $this->coordinates = $coordinates;
+        $this->definitionId = $definitionId;
 
         return $this;
     }
 
-    public function getUserId(): ?User
+    public function isStatus(): ?bool
     {
-        return $this->userId;
+        return $this->status;
     }
 
-    public function setUserId(?User $userId): self
+    public function setStatus(bool $status): self
     {
-        $this->userId = $userId;
+        $this->status = $status;
 
         return $this;
     }
 
-    public function isIsConfirmed(): ?bool
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->isConfirmed;
+        return $this->createdAt;
     }
 
-    public function setIsConfirmed(bool $isConfirmed): self
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
-        $this->isConfirmed = $isConfirmed;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getConfirmationToken(): ?string
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->confirmationToken;
+        return $this->updatedAt;
     }
 
-    public function setConfirmationToken(string $confirmationToken): self
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
-        $this->confirmationToken = $confirmationToken;
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getSentAt(): ?\DateTimeInterface
+    {
+        return $this->sentAt;
+    }
+
+    public function setSentAt(\DateTimeInterface $sentAt): self
+    {
+        $this->sentAt = $sentAt;
 
         return $this;
     }

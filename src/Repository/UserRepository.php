@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,6 +38,41 @@ class UserRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function create(string $email): User
+    {
+        $newUser = new User();
+        $newUser->setEmail($email);
+        $token = bin2hex(random_bytes(20));
+        $newUser->setAuthToken($token);
+
+        $this->getEntityManager()->persist($newUser);
+        $this->getEntityManager()->flush();
+
+        return $newUser;
+    }
+
+    public function findByEmail(string $email): ?User
+    {
+        $user = $this->getEntityManager()->getRepository(User::class)->findOneBy(['email' => $email]);
+
+        if ($user) {
+            return $user;
+        } else {
+            return null;
+        }
+    }
+
+    public function getByEmail(string $email): User
+    {
+        $user = $this->findByEmail($email);
+
+        if (!$user) {
+            $user = $this->create($email);
+        }
+
+        return $user;
     }
 
 //    /**
