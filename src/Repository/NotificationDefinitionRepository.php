@@ -45,7 +45,8 @@ class NotificationDefinitionRepository extends ServiceEntityRepository
         $notificationDefinition = new NotificationDefinition();
         $token = bin2hex(random_bytes(20));
         $notificationDefinition->setConfirmationToken($token);
-        $notificationDefinition->setUserId($user->getId());
+        $notificationDefinition->setUserId($user);
+        $notificationDefinition->setIsConfirmed(false);
 
         $this->getEntityManager()->persist($notificationDefinition);
         $this->getEntityManager()->flush();
