@@ -1,0 +1,19 @@
+sync:
+  defaults:
+    mode: "two-way-resolved"
+    flushOnCreate: true
+    ignore:
+      vcs: true
+
+  weather-api:
+    alpha: "/Users/admin/Desktop/php/symfony/weather-api"
+    beta: "root@10.42.42.113:/Users/admin/Desktop/php/symfony/weather-api"
+    ignore:
+      paths:
+        - ".idea"
+    configurationBeta:
+      permissions:
+        defaultOwner: debian
+        defaultGroup: debian
+        defaultFileMode: 0666
+        defaultDirectoryMode: 0777
