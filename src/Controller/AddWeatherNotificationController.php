@@ -30,6 +30,7 @@ class AddWeatherNotificationController extends AbstractController
 
         $notificationDefinition = $entityManager->getRepository(NotificationDefinition::class)->create($user);
 
+        dd($notificationDefinition);
 
         if ($user) {
             return new SuccessApiResponse(['OK']);
