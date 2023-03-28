@@ -1,4 +1,4 @@
-FROM jasiucode/php-composer:version01
+FROM jasiucode/dockerhub:php82-composer
 
 COPY . /app
 WORKDIR /app
