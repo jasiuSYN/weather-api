@@ -40,12 +40,13 @@ class NotificationDefinitionRepository extends ServiceEntityRepository
         }
     }
 
-    public function create(User $user): NotificationDefinition
+    public function create(User $user, array $coordinates): NotificationDefinition
     {
         $notificationDefinition = new NotificationDefinition();
         $token = bin2hex(random_bytes(20));
         $notificationDefinition->setConfirmationToken($token);
         $notificationDefinition->setUserId($user);
+        $notificationDefinition->setCoordinates($coordinates);
         $notificationDefinition->setIsConfirmed(false);
 
         $this->getEntityManager()->persist($notificationDefinition);
