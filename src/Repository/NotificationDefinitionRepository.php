@@ -6,6 +6,8 @@ use App\Entity\NotificationDefinition;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * @extends ServiceEntityRepository<NotificationDefinition>
@@ -17,7 +19,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class NotificationDefinitionRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private HttpClientInterface $client, private UrlGeneratorInterface $urlGenerator)
     {
         parent::__construct($registry, NotificationDefinition::class);
     }
@@ -42,19 +44,42 @@ class NotificationDefinitionRepository extends ServiceEntityRepository
 
     public function create(User $user, array $coordinates): NotificationDefinition
     {
+        $localizationName = $this->fetchLocalizationName($coordinates);
+
         $notificationDefinition = new NotificationDefinition();
         $token = bin2hex(random_bytes(20));
         $notificationDefinition->setConfirmationToken($token);
         $notificationDefinition->setUserId($user);
         $notificationDefinition->setCoordinates($coordinates);
+        $notificationDefinition->setLocalizationName($localizationName);
         $notificationDefinition->setIsConfirmed(false);
 
         $this->getEntityManager()->persist($notificationDefinition);
+
         $this->getEntityManager()->flush();
 
         return $notificationDefinition;
     }
 
+    public function fetchLocalizationName(array $coordinates): string
+    {
+        $url = $this->urlGenerator->generate(
+            name: 'weather-coordinates',
+            referenceType: UrlGeneratorInterface::ABSOLUTE_URL
+        );
+
+        $response = $this->client->request(
+            method: 'GET',
+            url: $url,
+            options: ['query' => $coordinates]
+        );
+
+        if (200 !== $response->getStatusCode()) {
+            throw new \RuntimeException('Failed to fetch localization name');
+        }
+
+        return $response->toArray()['name'];
+    }
 //    /**
 //     * @return NotificationDefinition[] Returns an array of NotificationDefinition objects
 //     */

@@ -23,14 +23,12 @@ class NotificationDefinitionConfirmationController extends AbstractController
         string $token
     ): ApiResponse {
 
-        $entity = $entityManager->getRepository(NotificationDefinition::class)
-            ->findOneBy(['confirmationToken' => $token]);
+        $repository = $entityManager->getRepository(NotificationDefinition::class);
+        $entity = $repository->findOneBy(['confirmationToken' => $token]);
 
         if (isset($entity)) {
             $entity->setIsConfirmed(true);
-            $entityManager->persist($entity);
-
-            $entityManager->flush();
+            $repository->save($entity, true);
 
             return new SuccessApiResponse([$token => 'Confirmed']);
         } else {

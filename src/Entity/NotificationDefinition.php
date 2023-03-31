@@ -31,6 +31,9 @@ class NotificationDefinition
     #[ORM\OneToMany(mappedBy: 'definitionId', targetEntity: Notification::class, orphanRemoval: true)]
     private Collection $notifications;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $localizationName = null;
+
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
@@ -115,6 +118,18 @@ class NotificationDefinition
                 $notification->setDefinitionId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLocalizationName(): ?string
+    {
+        return $this->localizationName;
+    }
+
+    public function setLocalizationName(?string $localizationName): self
+    {
+        $this->localizationName = $localizationName;
 
         return $this;
     }
