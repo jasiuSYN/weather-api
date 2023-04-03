@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Notification;
+use App\Entity\NotificationDefinition;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -37,6 +38,22 @@ class NotificationRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+
+
+    public function create(NotificationDefinition $notificationDefinition): Notification
+    {
+
+        // TODO extend method, add findNotification function etc
+
+        $notification = new Notification();
+        $notification->setDefinitionId($notificationDefinition);
+        $notification->setSentAt(new \DateTime());
+        $notification->setStatus(true);
+        $notification->setCreatedAt();
+
+        return $notification;
     }
 
 //    /**

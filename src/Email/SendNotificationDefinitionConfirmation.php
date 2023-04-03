@@ -27,7 +27,7 @@ class SendNotificationDefinitionConfirmation
             ->from('support@weather-api.com')
             ->to($notificationDefinition->getUserId()->getEmail())
             ->subject('Notification confirmation')
-            ->text($confirmationLink);
+            ->text($notificationDefinition->getLocalizationName() . PHP_EOL .  $confirmationLink);
 
         $this->mailer->send($email);
     }

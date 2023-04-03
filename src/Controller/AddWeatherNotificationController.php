@@ -30,10 +30,9 @@ class AddWeatherNotificationController extends AbstractController
             return new BadRequestApiResponse(['error' => 'Email and coordinates are required.']);
         }
 
-
         $user = $entityManager->getRepository(User::class)->getByEmail($data['email']);
 
-        $notificationDefinition = $entityManager->getRepository(NotificationDefinition::class)->create(
+        $notificationDefinition = $entityManager->getRepository(NotificationDefinition::class)->getByUserAndCoordinates(
             $user,
             $data['coordinates']
         );

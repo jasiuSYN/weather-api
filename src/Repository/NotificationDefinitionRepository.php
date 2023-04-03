@@ -6,6 +6,7 @@ use App\Entity\NotificationDefinition;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -50,7 +51,8 @@ class NotificationDefinitionRepository extends ServiceEntityRepository
         $token = bin2hex(random_bytes(20));
         $notificationDefinition->setConfirmationToken($token);
         $notificationDefinition->setUserId($user);
-        $notificationDefinition->setCoordinates($coordinates);
+        $notificationDefinition->setLatitude($coordinates['latitude']);
+        $notificationDefinition->setLongitude($coordinates['longitude']);
         $notificationDefinition->setLocalizationName($localizationName);
         $notificationDefinition->setIsConfirmed(false);
 
@@ -75,11 +77,40 @@ class NotificationDefinitionRepository extends ServiceEntityRepository
         );
 
         if (200 !== $response->getStatusCode()) {
-            throw new \RuntimeException('Failed to fetch localization name');
+            throw new \Exception('Failed to fetch localization name');
         }
 
         return $response->toArray()['name'];
     }
+
+    public function findByUserAndCoordinates(User $user, array $coordinates): ?NotificationDefinition
+    {
+        return $this->getEntityManager()->getRepository(NotificationDefinition::class)->findOneBy([
+            'userId' => $user->getId(),
+            'latitude' => $coordinates['latitude'],
+            'longitude' => $coordinates['longitude']
+        ]);
+    }
+
+    public function getByUserAndCoordinates(User $user, array $coordinates): NotificationDefinition
+    {
+        $notificationDefinition = $this->findByUserAndCoordinates($user, $coordinates);
+
+        if (!$notificationDefinition) {
+            $notificationDefinition = $this->create($user, $coordinates);
+        } else {
+            throw new BadRequestHttpException('Notification definition already exists');
+        }
+
+        return $notificationDefinition;
+    }
+
+    public function findIsConfirmed(): ?array
+    {
+        return $this->getEntityManager()->getRepository(NotificationDefinition::class)
+            ->findBy(['isConfirmed' => true]);
+    }
+
 //    /**
 //     * @return NotificationDefinition[] Returns an array of NotificationDefinition objects
 //     */
