@@ -18,11 +18,14 @@ class Client implements WeatherProviderClientInterface
         private HttpClientInterface $client,
         private string $openWeatherMapApiKey,
         private OpenWeatherMapToWeatherDataTransformer $transformer
-    ) {}
+    ) {
+    }
 
     public function fetchWeatherForCoordinates(Coordinates $coordinates): WeatherData
     {
-        $response = $this->client->request('GET', 'https://api.openweathermap.org/data/2.5/weather',
+        $response = $this->client->request(
+            'GET',
+            'https://api.openweathermap.org/data/2.5/weather',
             [
                 'query' => [
                     'lat' => $coordinates->getLatitude(),
@@ -30,7 +33,8 @@ class Client implements WeatherProviderClientInterface
                     'appid' => $this->openWeatherMapApiKey,
                     'units' => 'metric',
                 ]
-            ]);
+            ]
+        );
 
         return $this->transformer->transform($response);
     }
