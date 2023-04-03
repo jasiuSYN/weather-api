@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\NotificationDefinitionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: NotificationDefinitionRepository::class)]
@@ -14,9 +15,6 @@ class NotificationDefinition
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    #[ORM\Column(nullable: true)]
-    private array $coordinates = [];
 
     #[ORM\ManyToOne(inversedBy: 'notifications')]
     #[ORM\JoinColumn(nullable: false)]
@@ -34,6 +32,12 @@ class NotificationDefinition
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $localizationName = null;
 
+    #[ORM\Column]
+    private ?float $latitude = null;
+
+    #[ORM\Column]
+    private ?float $longitude = null;
+
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
@@ -42,18 +46,6 @@ class NotificationDefinition
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCoordinates(): array
-    {
-        return $this->coordinates;
-    }
-
-    public function setCoordinates(?array $coordinates): self
-    {
-        $this->coordinates = $coordinates;
-
-        return $this;
     }
 
     public function getUserId(): ?User
@@ -130,6 +122,30 @@ class NotificationDefinition
     public function setLocalizationName(?string $localizationName): self
     {
         $this->localizationName = $localizationName;
+
+        return $this;
+    }
+
+    public function getLatitude(): ?float
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(float $latitude): self
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function getLongitude(): ?float
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(float $longitude): self
+    {
+        $this->longitude = $longitude;
 
         return $this;
     }
