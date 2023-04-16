@@ -2,6 +2,8 @@
 
 namespace App\Repository;
 
+use App\Client\Weather\OpenWeatherMap\Client;
+use App\Email\SendWeatherNotification;
 use App\Entity\Notification;
 use App\Entity\NotificationDefinition;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -17,8 +19,10 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class NotificationRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private SendWeatherNotification $sendWeatherNotification
+    ) {
         parent::__construct($registry, Notification::class);
     }
 
@@ -40,44 +44,39 @@ class NotificationRepository extends ServiceEntityRepository
         }
     }
 
-
-
     public function create(NotificationDefinition $notificationDefinition): Notification
     {
+        $notificationEntity = $this->findNotificationById($notificationDefinition);
 
-        // TODO extend method, add findNotification function etc
+        if (isset($notificationEntity)) {
+            return $notificationEntity;
+        } else {
+            $notification = new Notification();
+            $notification->setDefinitionId($notificationDefinition->getId());
+            $notification->setSentAt(new \DateTime());
+            $notification->setStatus($notification::STATUS_CREATED);
 
-        $notification = new Notification();
-        $notification->setDefinitionId($notificationDefinition);
-        $notification->setSentAt(new \DateTime());
-        $notification->setStatus(true);
-        $notification->setCreatedAt();
+            $this->getEntityManager()->persist($notification);
 
-        return $notification;
+            return $notification;
+        }
     }
 
-//    /**
-//     * @return Notification[] Returns an array of Notification objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('n')
-//            ->andWhere('n.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('n.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findNotificationById(NotificationDefinition $notificationDefinition): ?Notification
+    {
+        // TODO bład w tej części, funkcja getNotification jest PersistentCollection. Trzeba aby zwróciło ewentualnie
+        // TODO powiazane notyfikacje. Na ten moment jest zwracana lista/kolecja przez One2Many
+        return $this->find($notificationDefinition->getNotifications());
+    }
 
-//    public function findOneBySomeField($value): ?Notification
-//    {
-//        return $this->createQueryBuilder('n')
-//            ->andWhere('n.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function fromDefinition(array $definitions): void
+    {
+        foreach ($definitions as $definition) {
+            $this->sendWeatherNotification->send($definition);
+
+            $this->create($definition);
+        }
+
+        $this->getEntityManager()->flush();
+    }
 }

@@ -17,7 +17,7 @@ class Coordinates
         min: -90,
         max: 90
     )]
-    private ?string $latitude;
+    private string $latitude;
 
     #[Assert\NotBlank(
         message: 'WEATHER_REQUEST_LONGITUDE_IS_EMPTY'
@@ -28,9 +28,9 @@ class Coordinates
         min: -180,
         max: 180
     )]
-    private ?string $longitude;
+    private string $longitude;
 
-    public function __construct(?string $latitude, ?string $longitude)
+    public function __construct(string $latitude, string $longitude)
     {
         $this->latitude = $latitude;
         $this->longitude = $longitude;
