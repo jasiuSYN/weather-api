@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\NotificationDefinition;
+use App\Repository\NotificationDefinitionRepository;
 use App\Response\ApiResponse;
 use App\Response\NotFoundApiResponse;
 use App\Response\SuccessApiResponse;
@@ -20,19 +21,19 @@ class NotificationDefinitionConfirmationController extends AbstractController
     #[Route("/api/confirm/{token}", name: 'token-confirmation', methods: 'GET')]
     public function __invoke(
         EntityManagerInterface $entityManager,
+        NotificationDefinitionRepository $definitionRepository,
         string $token
     ): ApiResponse {
 
-        $repository = $entityManager->getRepository(NotificationDefinition::class);
-        $entity = $repository->findOneBy(['confirmationToken' => $token]);
+        $definitionFoundByToken = $definitionRepository->findOneByConfirmationToken($token);
 
-        if (isset($entity)) {
-            $entity->setIsConfirmed(true);
-            $repository->save($entity, true);
-
-            return new SuccessApiResponse([$token => 'Confirmed']);
-        } else {
+        if (!$definitionFoundByToken) {
             return new NotFoundApiResponse([$token => 'Not found']);
         }
+
+        $definitionFoundByToken->setIsConfirmed(true);
+        $definitionRepository->save($definitionFoundByToken, true);
+
+        return new SuccessApiResponse([$token => 'Confirmed']);
     }
 }
