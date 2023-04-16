@@ -23,11 +23,11 @@ class User
     private string $authToken;
 
     #[ORM\OneToMany(mappedBy: 'userId', targetEntity: NotificationDefinition::class, orphanRemoval: true)]
-    private Collection $notifications;
+    private Collection $notificationDefinitions;
 
     public function __construct()
     {
-        $this->notifications = new ArrayCollection();
+        $this->notificationDefinitions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -64,13 +64,13 @@ class User
      */
     public function getNotificationDefinitions(): Collection
     {
-        return $this->notifications;
+        return $this->notificationDefinitions;
     }
 
     public function addNotificationDefinition(NotificationDefinition $notificationDefinitions): self
     {
-        if (!$this->notifications->contains($notificationDefinitions)) {
-            $this->notifications->add($notificationDefinitions);
+        if (!$this->notificationDefinitions->contains($notificationDefinitions)) {
+            $this->notificationDefinitions->add($notificationDefinitions);
             $notificationDefinitions->setUserId($this);
         }
 
@@ -79,7 +79,7 @@ class User
 
     public function removeNotificationDefinition(NotificationDefinition $notificationDefinitions): self
     {
-        if ($this->notifications->removeElement($notificationDefinitions)) {
+        if ($this->notificationDefinitions->removeElement($notificationDefinitions)) {
             // set the owning side to null (unless already changed)
             if ($notificationDefinitions->getUserId() === $this) {
                 $notificationDefinitions->setUserId(null);
