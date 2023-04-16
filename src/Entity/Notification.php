@@ -6,9 +6,14 @@ use App\Repository\NotificationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: NotificationRepository::class)]
 class Notification
 {
+    const STATUS_CREATED = 'CREATED';
+    const STATUS_SUCCESS = 'SUCCESS';
+    const STATUS_FAILED = 'FAILED';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -54,6 +59,9 @@ class Notification
 
     public function setStatus(bool $status): self
     {
+        if (!in_array($status, array(self::STATUS_CREATED, self::STATUS_SUCCESS, self::STATUS_FAILED))) {
+            throw new \InvalidArgumentException("Invalid status");
+        }
         $this->status = $status;
 
         return $this;
@@ -65,11 +73,9 @@ class Notification
     }
 
     #[ORM\PrePersist]
-    public function setCreatedAt(): self
+    public function setCreatedAt(): void
     {
-        $this->createdAt = new \DateTimeImmutable;
-
-        return $this;
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
