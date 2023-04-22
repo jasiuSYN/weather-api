@@ -12,6 +12,7 @@ use App\Response\SuccessApiResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBus;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AddWeatherNotificationController extends AbstractController
@@ -20,7 +21,7 @@ class AddWeatherNotificationController extends AbstractController
     public function __invoke(
         Request $request,
         UserRepository $userRepository,
-        MessageBus $messageBus
+        MessageBusInterface $messageBus
     ): ApiResponse {
         $data = json_decode($request->getContent(), true);
 

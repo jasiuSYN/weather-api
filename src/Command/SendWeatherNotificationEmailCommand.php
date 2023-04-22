@@ -33,6 +33,10 @@ class SendWeatherNotificationEmailCommand extends Command
         foreach ($confirmedNotificationDefinitions as $confirmedNotificationDefinition) {
             $notification = Notification::fromDefinition($confirmedNotificationDefinition);
             $this->notificationRepository->save($notification, true);
+
+            if ($notification->isStatus() === Notification::STATUS_CREATED) {
+                // TODO wysyłka powiadomienia -> zmiana statusu na STATUS_SUCCESS
+            }
         }
         return Command::SUCCESS;
     }
