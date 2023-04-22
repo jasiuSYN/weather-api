@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\NotificationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: NotificationRepository::class)]
@@ -17,25 +18,27 @@ class Notification
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\ManyToOne(inversedBy: 'notifications')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?NotificationDefinition $definitionId = null;
+    private NotificationDefinition $definitionId;
 
     #[ORM\Column]
-    private ?bool $status = null;
+    private string $status;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $updatedAt = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    #[Gedmo\Timestampable(on: 'create')]
+    private \DateTimeInterface $createdAt;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Gedmo\Timestampable(on: 'update')]
+    private \DateTimeInterface $updatedAt;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $sentAt = null;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -57,7 +60,7 @@ class Notification
         return $this->status;
     }
 
-    public function setStatus(bool $status): self
+    public function setStatus(string $status): self
     {
         if (!in_array($status, array(self::STATUS_CREATED, self::STATUS_SUCCESS, self::STATUS_FAILED))) {
             throw new \InvalidArgumentException("Invalid status");
@@ -72,22 +75,9 @@ class Notification
         return $this->createdAt;
     }
 
-    #[ORM\PrePersist]
-    public function setCreatedAt(): void
-    {
-        $this->createdAt = new \DateTimeImmutable();
-    }
-
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
     }
 
     public function getSentAt(): ?\DateTimeInterface
@@ -100,5 +90,14 @@ class Notification
         $this->sentAt = $sentAt;
 
         return $this;
+    }
+
+    public static function fromDefinition(NotificationDefinition $definition)
+    {
+        $notification = new self();
+        $notification->setDefinitionId($definition);
+        $notification->setStatus($notification::STATUS_CREATED);
+
+        return $notification;
     }
 }
