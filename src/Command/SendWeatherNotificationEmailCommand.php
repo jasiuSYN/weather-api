@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-
+use App\Entity\Notification;
 use App\Repository\NotificationDefinitionRepository;
 use App\Repository\NotificationRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -30,8 +30,10 @@ class SendWeatherNotificationEmailCommand extends Command
             return Command::FAILURE;
         }
 
-        $this->notificationRepository->fromDefinition($confirmedNotificationDefinitions);
-
+        foreach ($confirmedNotificationDefinitions as $confirmedNotificationDefinition) {
+            $notification = Notification::fromDefinition($confirmedNotificationDefinition);
+            $this->notificationRepository->save($notification, true);
+        }
         return Command::SUCCESS;
     }
 }

@@ -70,7 +70,7 @@ class Notification
         return $this;
     }
 
-    public function getCreatedAt(): \DateTimeInterface
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -92,7 +92,7 @@ class Notification
         return $this;
     }
 
-    public static function fromDefinition(NotificationDefinition $definition): Notification
+    public static function fromDefinition(NotificationDefinition $definition)
     {
         $notification = new self();
         $notification->setDefinitionId($definition);
