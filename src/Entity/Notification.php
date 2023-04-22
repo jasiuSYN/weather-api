@@ -55,7 +55,7 @@ class Notification
         return $this;
     }
 
-    public function isStatus(): ?bool
+    public function isStatus(): string
     {
         return $this->status;
     }
