@@ -2,17 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Email;
+namespace App\Service;
 
 use App\Entity\NotificationDefinition;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class SendNotificationDefinitionConfirmation
+class EmailConfirmationToken
 {
-    public function __construct(private MailerInterface $mailer, private UrlGeneratorInterface $urlGenerator)
-    {
+    public function __construct(
+        private MailerInterface $mailer,
+        private UrlGeneratorInterface $urlGenerator
+    ) {
     }
 
     public function sendConfirmation(NotificationDefinition $notificationDefinition): void
