@@ -13,14 +13,14 @@ class NotificationDefinition
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
-    #[ORM\ManyToOne(inversedBy: 'notifications')]
+    #[ORM\ManyToOne(inversedBy: 'notificationDefinitions')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $userId = null;
+    private User $userId;
 
     #[ORM\Column]
-    private ?bool $isConfirmed = null;
+    private bool $isConfirmed = false;
 
     #[ORM\Column(length: 255)]
     private ?string $confirmationToken = null;
@@ -42,24 +42,24 @@ class NotificationDefinition
         $this->notifications = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getUserId(): ?User
+    public function getUserId(): User
     {
         return $this->userId;
     }
 
-    public function setUserId(?User $userId): self
+    public function setUserId(User $userId): self
     {
         $this->userId = $userId;
 
         return $this;
     }
 
-    public function isIsConfirmed(): ?bool
+    public function isIsConfirmed(): bool
     {
         return $this->isConfirmed;
     }
