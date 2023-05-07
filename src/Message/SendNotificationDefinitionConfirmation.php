@@ -6,17 +6,12 @@ namespace App\Message;
 
 class SendNotificationDefinitionConfirmation
 {
-    public function __construct(private int $userId, private array $coordinates)
+    public function __construct(private int $definitionId)
     {
     }
 
-    public function getUserId(): int
+    public function getDefinitionId(): int
     {
-        return $this->userId;
-    }
-
-    public function getCoordinates(): array
-    {
-        return $this->coordinates;
+        return $this->definitionId;
     }
 }

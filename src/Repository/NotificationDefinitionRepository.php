@@ -48,6 +48,10 @@ class NotificationDefinitionRepository extends ServiceEntityRepository
     {
         $localizationName = $this->client->fetchLocalizationName($coordinates);
 
+        if ($this->findByUserAndCoordinates($user, $coordinates, $localizationName)) {
+            throw new \Exception('Notification definition already exists');
+        }
+
         $notificationDefinition = new NotificationDefinition();
         $token = bin2hex(random_bytes(20));
         $notificationDefinition->setConfirmationToken($token);
@@ -62,28 +66,18 @@ class NotificationDefinitionRepository extends ServiceEntityRepository
         return $notificationDefinition;
     }
 
-    public function findByUserAndCoordinates(User $user, array $coordinates): ?NotificationDefinition
-    {
+    public function findByUserAndCoordinates(
+        User $user,
+        array $coordinates,
+        string $localization
+    ): ?NotificationDefinition {
         return $this->findOneBy([
             'userId' => $user->getId(),
             'latitude' => $coordinates['latitude'],
-            'longitude' => $coordinates['longitude']
+            'longitude' => $coordinates['longitude'],
+            'localizationName' => $localization
         ]);
     }
-
-    public function getByUserAndCoordinates(User $user, array $coordinates): NotificationDefinition
-    {
-        $notificationDefinition = $this->findByUserAndCoordinates($user, $coordinates);
-
-        if (!$notificationDefinition) {
-            $notificationDefinition = $this->create($user, $coordinates);
-        } else {
-            throw new BadRequestHttpException('Notification definition already exists');
-        }
-
-        return $notificationDefinition;
-    }
-
     public function findIsConfirmed(): array
     {
         return $this->findBy(['isConfirmed' => true]);

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Message\SendNotificationDefinitionConfirmation;
+use App\Repository\NotificationDefinitionRepository;
 use App\Repository\UserRepository;
 use App\Response\ApiResponse;
 use App\Response\BadRequestApiResponse;
@@ -21,7 +22,8 @@ class AddWeatherNotificationController extends AbstractController
     public function __invoke(
         Request $request,
         UserRepository $userRepository,
-        MessageBusInterface $messageBus
+        MessageBusInterface $messageBus,
+        NotificationDefinitionRepository $definitionRepository
     ): ApiResponse {
         $data = json_decode($request->getContent(), true);
 
@@ -31,10 +33,9 @@ class AddWeatherNotificationController extends AbstractController
 
         $user = $userRepository->getByEmail($data['email']);
 
-        $message = new SendNotificationDefinitionConfirmation(
-            $user->getId(),
-            $data['coordinates']
-        );
+        $notificationDefinition = $definitionRepository->create($user, $data['coordinates']);
+
+        $message = new SendNotificationDefinitionConfirmation($notificationDefinition->getId());
 
         $messageBus->dispatch($message);
 

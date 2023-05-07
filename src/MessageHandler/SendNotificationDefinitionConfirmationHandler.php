@@ -16,18 +16,12 @@ class SendNotificationDefinitionConfirmationHandler
     public function __construct(
         private NotificationDefinitionRepository $definitionRepository,
         private EmailConfirmationToken $emailConfirmationToken,
-        private UserRepository $userRepository
     ) {
     }
 
     public function __invoke(SendNotificationDefinitionConfirmation $definitionConfirmation)
     {
-        $user = $this->userRepository->find($definitionConfirmation->getUserId());
-
-        $notificationDefinition = $this->definitionRepository->getByUserAndCoordinates(
-            $user,
-            $definitionConfirmation->getCoordinates()
-        );
+        $notificationDefinition = $this->definitionRepository->find($definitionConfirmation->getDefinitionId());
 
         $this->emailConfirmationToken->sendConfirmation($notificationDefinition);
     }
