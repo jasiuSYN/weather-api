@@ -17,6 +17,7 @@
         "sensio/framework-extra-bundle": "^6.2",
         "squizlabs/php_codesniffer": "3.*",
         "stof/doctrine-extensions-bundle": "^1.7",
+        "symfony/amqp-messenger": "6.2.*",
         "symfony/console": "6.2.*",
         "symfony/dotenv": "6.2.*",
         "symfony/flex": "^2",
