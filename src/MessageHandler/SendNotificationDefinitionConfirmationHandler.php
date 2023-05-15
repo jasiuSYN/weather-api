@@ -6,8 +6,7 @@ namespace App\MessageHandler;
 
 use App\Message\SendNotificationDefinitionConfirmation;
 use App\Repository\NotificationDefinitionRepository;
-use App\Repository\UserRepository;
-use App\Service\EmailConfirmationToken;
+use App\EmailService\NotificationConfirmationSender;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -15,7 +14,7 @@ class SendNotificationDefinitionConfirmationHandler
 {
     public function __construct(
         private NotificationDefinitionRepository $definitionRepository,
-        private EmailConfirmationToken $emailConfirmationToken,
+        private NotificationConfirmationSender   $notificationConfirmationSender,
     ) {
     }
 
@@ -23,6 +22,6 @@ class SendNotificationDefinitionConfirmationHandler
     {
         $notificationDefinition = $this->definitionRepository->find($definitionConfirmation->getDefinitionId());
 
-        $this->emailConfirmationToken->sendConfirmation($notificationDefinition);
+        $this->notificationConfirmationSender->sendConfirmation($notificationDefinition);
     }
 }
