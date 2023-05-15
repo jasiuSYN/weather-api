@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Email;
+namespace App\EmailService;
 
 use App\Client\Weather\OpenWeatherMap\Client;
 use App\Entity\NotificationDefinition;
@@ -10,7 +10,7 @@ use App\Model\Coordinates;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
-class SendWeatherNotification
+class WeatherNotificationSender
 {
     public function __construct(
         private MailerInterface $mailer,
