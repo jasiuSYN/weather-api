@@ -78,7 +78,7 @@ class NotificationDefinitionRepository extends ServiceEntityRepository
             'localizationName' => $localization
         ]);
     }
-    public function findIsConfirmed(): array
+    public function findAllConfirmed(): array
     {
         return $this->findBy(['isConfirmed' => true]);
     }
