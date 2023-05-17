@@ -40,7 +40,7 @@ class SendWeatherNotificationEmailCommand extends Command
             $this->notificationRepository->save($notification, true);
 
             if ($notification->isStatus() === Notification::STATUS_CREATED) {
-                $message = new SendWeatherDataNotification($confirmedNotificationDefinition->getId());
+                $message = new SendWeatherDataNotification($notification->getId());
                 $this->messageBus->dispatch($message);
             }
         }

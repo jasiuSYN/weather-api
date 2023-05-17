@@ -6,12 +6,12 @@ namespace App\Message;
 
 class SendWeatherDataNotification
 {
-    public function __construct(private int $definitionId)
+    public function __construct(private int $notificationId)
     {
     }
 
-    public function getDefinitionId(): int
+    public function getNotificationId(): int
     {
-        return $this->definitionId;
+        return $this->notificationId;
     }
 }

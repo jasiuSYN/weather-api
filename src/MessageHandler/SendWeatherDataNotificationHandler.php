@@ -16,29 +16,22 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 class SendWeatherDataNotificationHandler
 {
     public function __construct(
-        private NotificationDefinitionRepository $definitionRepository,
         private NotificationRepository $notificationRepository,
-        private WeatherNotificationSender   $weatherNotificationSender
+        private WeatherNotificationSender $weatherNotificationSender
     ) {
     }
 
     public function __invoke(SendWeatherDataNotification $definitionConfirmation)
     {
-        $notificationDefinition = $this->definitionRepository->find($definitionConfirmation->getDefinitionId());
-        $notifications = $notificationDefinition->getNotifications();
+        $notification = $this->notificationRepository->find(($definitionConfirmation->getNotificationId()));
 
         try {
-            $this->weatherNotificationSender->send($notificationDefinition);
-
-            foreach ($notifications as $notification) {
-                $notification->setStatus(Notification::STATUS_SUCCESS);
-                $this->notificationRepository->save($notification, true);
-            }
+            $this->weatherNotificationSender->send($notification->getDefinitionId());
+            $notification->setStatus(Notification::STATUS_SUCCESS);
+            $this->notificationRepository->save($notification, true);
         } catch (\Exception $e) {
-            foreach ($notifications as $notification) {
                 $notification->setStatus(Notification::STATUS_FAILED);
                 $this->notificationRepository->save($notification, true);
-            }
         }
     }
 }
