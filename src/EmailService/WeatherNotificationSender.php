@@ -33,6 +33,10 @@ class WeatherNotificationSender
             ->subject('Weather notification for ' . $entity->getLocalizationName())
             ->text((string) $weatherData);
 
-        $this->mailer->send($email);
+        try {
+            $this->mailer->send($email);
+        } catch (\Exception $e) {
+            throw new \Exception('Error while sending the weather notification: ' . $e->getMessage());
+        }
     }
 }
