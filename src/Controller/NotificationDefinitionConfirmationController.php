@@ -24,7 +24,6 @@ class NotificationDefinitionConfirmationController extends AbstractController
         NotificationDefinitionRepository $definitionRepository,
         string $token
     ): ApiResponse {
-
         $definitionFoundByToken = $definitionRepository->findOneByConfirmationToken($token);
 
         if (!$definitionFoundByToken) {
