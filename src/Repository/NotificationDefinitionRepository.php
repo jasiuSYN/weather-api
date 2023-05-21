@@ -2,12 +2,10 @@
 
 namespace App\Repository;
 
-use App\Client\Weather\OpenWeatherMap\Client;
 use App\Entity\NotificationDefinition;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * @extends ServiceEntityRepository<NotificationDefinition>
@@ -21,7 +19,6 @@ class NotificationDefinitionRepository extends ServiceEntityRepository
 {
     public function __construct(
         ManagerRegistry $registry,
-        private Client $client,
     ) {
         parent::__construct($registry, NotificationDefinition::class);
     }
@@ -44,37 +41,16 @@ class NotificationDefinitionRepository extends ServiceEntityRepository
         }
     }
 
-    public function create(User $user, array $coordinates): NotificationDefinition
-    {
-        $localizationName = $this->client->fetchLocalizationName($coordinates);
-
-        if ($this->findByUserAndCoordinates($user, $coordinates, $localizationName)) {
-            throw new \Exception('Notification definition already exists');
-        }
-
-        $notificationDefinition = new NotificationDefinition();
-        $token = bin2hex(random_bytes(20));
-        $notificationDefinition->setConfirmationToken($token);
-        $notificationDefinition->setUserId($user);
-        $notificationDefinition->setLatitude($coordinates['latitude']);
-        $notificationDefinition->setLongitude($coordinates['longitude']);
-        $notificationDefinition->setLocalizationName($localizationName);
-        $notificationDefinition->setIsConfirmed(false);
-
-        $this->save($notificationDefinition, true);
-
-        return $notificationDefinition;
-    }
-
-    public function findByUserAndCoordinates(
+    public function findByUserCoordinatesLocalizationName(
         User $user,
-        array $coordinates,
+        string $latitude,
+        string $longitude,
         string $localization
     ): ?NotificationDefinition {
         return $this->findOneBy([
             'userId' => $user->getId(),
-            'latitude' => $coordinates['latitude'],
-            'longitude' => $coordinates['longitude'],
+            'latitude' => $latitude,
+            'longitude' => $longitude,
             'localizationName' => $localization
         ]);
     }

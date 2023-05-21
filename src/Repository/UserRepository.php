@@ -39,19 +39,6 @@ class UserRepository extends ServiceEntityRepository
         }
     }
 
-    public function create(string $email): User
-    {
-        $newUser = new User();
-        $newUser->setEmail($email);
-        $token = bin2hex(random_bytes(20));
-        $newUser->setAuthToken($token);
-
-        $this->getEntityManager()->persist($newUser);
-        $this->getEntityManager()->flush();
-
-        return $newUser;
-    }
-
     public function findByEmail(string $email): ?User
     {
         $user = $this->getEntityManager()->getRepository(User::class)->findOneBy(['email' => $email]);
@@ -61,16 +48,5 @@ class UserRepository extends ServiceEntityRepository
         } else {
             return null;
         }
-    }
-
-    public function getByEmail(string $email): User
-    {
-        $user = $this->findByEmail($email);
-
-        if (!$user) {
-            $user = $this->create($email);
-        }
-
-        return $user;
     }
 }

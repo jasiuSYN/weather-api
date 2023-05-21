@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Client\Weather\OpenWeatherMap\Client;
 use App\Repository\NotificationDefinitionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -147,5 +148,25 @@ class NotificationDefinition
         $this->longitude = $longitude;
 
         return $this;
+    }
+
+    public static function create(
+        User $user,
+        string $latitude,
+        string $longitude,
+        string $localizationName
+    ): NotificationDefinition {
+
+        $notificationDefinition = new self();
+
+        $token = bin2hex(random_bytes(20));
+        $notificationDefinition->setConfirmationToken($token);
+        $notificationDefinition->setUserId($user);
+        $notificationDefinition->setLatitude($latitude);
+        $notificationDefinition->setLongitude($longitude);
+        $notificationDefinition->setLocalizationName($localizationName);
+        $notificationDefinition->setIsConfirmed(false);
+
+        return $notificationDefinition;
     }
 }

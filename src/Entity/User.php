@@ -88,4 +88,14 @@ class User
 
         return $this;
     }
+
+    public static function create(string $email): User
+    {
+        $newUser = new self();
+        $newUser->setEmail($email);
+        $token = bin2hex(random_bytes(20));
+        $newUser->setAuthToken($token);
+
+        return $newUser;
+    }
 }
