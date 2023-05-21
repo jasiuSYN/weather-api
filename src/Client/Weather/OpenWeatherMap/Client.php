@@ -43,15 +43,15 @@ class Client implements WeatherProviderClientInterface
         return $this->transformer->transform($response);
     }
 
-    public function fetchLocalizationName(array $coordinates): string
+    public function fetchLocalizationName(string $latitude, string $longitude): string
     {
         $response = $this->client->request(
             method: 'GET',
             url: 'https://api.openweathermap.org/data/2.5/weather',
             options: [
                 'query' => [
-                    'lat' => $coordinates['latitude'],
-                    'lon' => $coordinates['longitude'],
+                    'lat' => $latitude,
+                    'lon' => $longitude,
                     'appid' => $this->openWeatherMapApiKey,
                     'units' => 'metric',
                 ]
