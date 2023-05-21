@@ -27,11 +27,15 @@ class SendWeatherDataNotificationHandler
 
         try {
             $this->weatherNotificationSender->send($notification->getDefinitionId());
-            $notification->setStatus(Notification::STATUS_SUCCESS);
-            $this->notificationRepository->save($notification, true);
+            $this->setStatus($notification, Notification::STATUS_SUCCESS);
         } catch (\Exception $e) {
-                $notification->setStatus(Notification::STATUS_FAILED);
-                $this->notificationRepository->save($notification, true);
+            $this->setStatus($notification, Notification::STATUS_FAILED);
         }
+    }
+
+    public function setStatus(Notification $notification, string $status): void
+    {
+        $notification->setStatus($status);
+        $this->notificationRepository->save($notification, true);
     }
 }
