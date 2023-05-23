@@ -68,17 +68,17 @@ class AddNotificationDefinitionController extends AbstractController
             $localizationName
         );
 
-        if (empty($notificationDefinition)) {
-            $notificationDefinition = NotificationDefinition::create(
-                $user,
-                $addNotificationDefinitionInput->getLatitude(),
-                $addNotificationDefinitionInput->getLongitude(),
-                $localizationName
-            );
-            $definitionRepository->save($notificationDefinition, true);
-        } else {
+        if (null !== $notificationDefinition) {
             throw new \Exception('Notification definition already exists');
         }
+
+        $notificationDefinition = NotificationDefinition::create(
+            $user,
+            $addNotificationDefinitionInput->getLatitude(),
+            $addNotificationDefinitionInput->getLongitude(),
+            $localizationName
+        );
+        $definitionRepository->save($notificationDefinition, true);
 
         $message = new SendNotificationDefinitionConfirmation($notificationDefinition->getId());
 
