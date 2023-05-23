@@ -108,4 +108,22 @@ class WeatherData
     {
         $this->humidity = $humidity;
     }
+
+    public function __toString(): string
+    {
+        return json_encode([
+            'name' => $this->name,
+            'coordinates' => [
+                'latitude' => $this->coordinates->getLatitude(),
+                'longitude' => $this->coordinates->getLongitude(),
+            ],
+            'weather' => $this->weather,
+            'description' => $this->description,
+            'average_temperature' => $this->averageTemperature,
+            'minimum_temperature' => $this->minimumTemperature,
+            'maximum_temperature' => $this->maximumTemperature,
+            'pressure' => $this->pressure,
+            'humidity' => $this->humidity,
+        ]);
+    }
 }

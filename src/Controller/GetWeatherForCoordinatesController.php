@@ -6,11 +6,10 @@ namespace App\Controller;
 
 use App\Client\Weather\WeatherProviderClientInterface;
 use App\Model\Coordinates;
-use App\Utility\Errors\ValidationErrorsToErrorListTransformer;
 use App\Response\ApiResponse;
 use App\Response\BadRequestApiResponse;
 use App\Response\SuccessApiResponse;
-
+use App\Utility\Errors\ValidationErrorsToErrorListTransformer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;

@@ -30,3 +30,11 @@ services:
     App\EventListener\ApiResponseListener:
         tags:
             - { name: kernel.event_listener, event: kernel.view }
+
+    App\EventSubscriber\JsonRequestEventSubscriber:
+        tags:
+            - { name: kernel.event_subscriber }
+
+    App\EventSubscriber\Doctrine\FixDefaultSchemaSubscriber:
+        tags:
+            - { name: doctrine.event_subscriber }
