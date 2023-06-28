@@ -1,0 +1,1 @@
+{"version":1,"defects":{"App\\Tests\\GetLocalizationsForGeocodeControllerTest::testInvokeWithEmptyGeocodeRequest":7},"times":{"App\\Tests\\GetLocalizationsForGeocodeControllerTest::testInvokeWithEmptyGeocodeRequest":0.003}}
