@@ -7,9 +7,8 @@ namespace App\Tests;
 use App\Client\Geocode\GeocodeProviderClientInterface;
 use App\Controller\GetLocalizationsForGeocodeController;
 use App\Model\GeocodeRequest;
-use App\Model\Localization;
-use App\Response\ApiResponse;
 use App\Response\NotFoundApiResponse;
+use App\Response\SuccessApiResponse;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -24,7 +23,9 @@ class GetLocalizationsForGeocodeControllerTest extends TestCase
         $this->request = Request::create('api/localizations-for-geocode', 'GET');
         $this->normalizer = $this->createMock(ObjectNormalizer::class);
         $this->client = $this->createMock(GeocodeProviderClientInterface::class);
-
+    }
+    public function testInvokeWithEmptyGeocodeRequest(): void
+    {
         $this->normalizer->expects($this->once())
             ->method('denormalize')
             ->with([], GeocodeRequest::class)
@@ -33,15 +34,32 @@ class GetLocalizationsForGeocodeControllerTest extends TestCase
         $this->client->expects($this->once())
             ->method('geocode')
             ->willReturn([]);
-    }
-    public function testInvokeWithEmptyGeocodeRequest(): void
-    {
-        $controller = new GetLocalizationsForGeocodeController();
 
+        $controller = new GetLocalizationsForGeocodeController();
         $response = $controller($this->request, $this->normalizer, $this->client);
 
         $this->assertInstanceOf(NotFoundApiResponse::class, $response);
 
         $this->assertEquals(['code' => 'not_found'], $response->getErrors());
+    }
+
+    public function testInvokeWithValidGeocodeRequest(): void
+    {
+        $geocodeRequest = new GeocodeRequest('localizaton');
+        $this->normalizer->expects($this->once())
+            ->method('denormalize')
+            ->with([], GeocodeRequest::class)
+            ->willReturn($geocodeRequest);
+
+        $this->client->expects($this->once())
+            ->method('geocode')
+            ->with($geocodeRequest)
+            ->willReturn(['localizaiton' => 'geocode']);
+
+        $controller = new GetLocalizationsForGeocodeController();
+        $response = $controller($this->request, $this->normalizer, $this->client);
+
+        $this->assertInstanceOf(SuccessApiResponse::class, $response);
+        $this->assertEquals(200, $response->getHttpStatusCode());
     }
 }

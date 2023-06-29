@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.2/phpunit.xsd" backupGlobals="false" colors="true" bootstrap="vendor/autoload.php" cacheDirectory=".phpunit.cache">
-  <coverage/>
+  <php>
+    <env name="KERNEL_CLASS" value="App\Kernel" />
+  </php>
   <testsuites>
     <testsuite name="Test Suite">
       <directory>./tests</directory>
@@ -12,3 +14,4 @@
     </include>
   </source>
 </phpunit>
+

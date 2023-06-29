@@ -25,7 +25,6 @@ class GetLocalizationsForGeocodeController extends AbstractController
         $geocodeRequest = $normalizer->denormalize($request->query->all(), GeocodeRequest::class);
 
         $localizationsData = $client->geocode($geocodeRequest);
-
         if ($localizationsData === []) {
             return new NotFoundApiResponse(error: ["code" => "not_found"]);
         }
