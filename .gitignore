@@ -11,3 +11,9 @@
 /mutagen.yml.lock
 /mutagen.yml
 ###< symfony/framework-bundle ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+/.phpunit.cache
+###< phpunit/phpunit ###
